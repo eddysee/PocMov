@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,11 +30,15 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("httpRequestComplete");
         registerReceiver(httpReceiver,intentFilter);
-        RecyclerView recentRecyclerView = findViewById(R.id.recentMovieRecycler);
-        recentMovieAdapter = new RecentMovieAdapter();
-        recentRecyclerView.setAdapter(recentMovieAdapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recentRecyclerView.setLayoutManager(linearLayoutManager);
+
+        ViewPager viewPager = (ViewPager)findViewById(R.id.pager);
+        MainPagerAdapter mainPagerAdapter = new MainPagerAdapter(this,getSupportFragmentManager());
+        viewPager.setAdapter(mainPagerAdapter);
+        TabLayout tabLayout = (TabLayout)findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+
+
 
 
     }
