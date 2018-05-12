@@ -4,7 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +32,10 @@ public class RecentMovieAdapter extends RecyclerView.Adapter<RecentMovieAdapter.
         ViewGroup itemViewGroup = (ViewGroup)holder.itemView;
         TextView movieTitleView = itemViewGroup.findViewById(R.id.movieTitleView);
         TextView ratingTitleView = itemViewGroup.findViewById(R.id.movieRatingView);
+        ImageView posterImageView = itemViewGroup.findViewById(R.id.posterImageView);
         movieTitleView.setText(movie.getName());
         ratingTitleView.setText("Rating : " + movie.getRatingString());
+        Picasso.get().load(TMDBUrl.imageUrlHead + movie.getPosterImageUrl()).into(posterImageView);
 
 
     }
