@@ -18,8 +18,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private RecentMovieAdapter recentMovieAdapter;
+private static ArrayList<Movie> movies = new ArrayList<>();
 
+public static ArrayList<Movie> getMovies(){
+    return movies;
+}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +51,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String response = intent.getStringExtra("responseString");
-            ArrayList<Movie> movies = parsePopularMovies(response);
-            recentMovieAdapter.setMovies(movies);
+            movies = parsePopularMovies(response);
+
+
 
         }
 
