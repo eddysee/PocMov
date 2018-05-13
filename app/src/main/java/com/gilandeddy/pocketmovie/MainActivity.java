@@ -18,30 +18,29 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-private static ArrayList<Movie> movies = new ArrayList<>();
+    private static ArrayList<Movie> movies = new ArrayList<>();
+    static RecentMovieAdapter recentMovieAdapter = new RecentMovieAdapter(); // Create the adapter early
 
-public static ArrayList<Movie> getMovies(){
-    return movies;
-}
+
+    public static ArrayList<Movie> getMovies() {
+       return movies;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        HttpRequestService.startActionRequestHttp(this,TMDBUrl.getPopularUrl(1));
-        HttpReceiver httpReceiver= new HttpReceiver();
+        HttpRequestService.startActionRequestHttp(this, TMDBUrl.getPopularUrl(1));
+        HttpReceiver httpReceiver = new HttpReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("httpRequestComplete");
-        registerReceiver(httpReceiver,intentFilter);
-
-        ViewPager viewPager = (ViewPager)findViewById(R.id.pager);
-        MainPagerAdapter mainPagerAdapter = new MainPagerAdapter(this,getSupportFragmentManager());
+        registerReceiver(httpReceiver, intentFilter);
+        recentMovieAdapter.setMovies(new ArrayList<Movie>(20)); // set place filler list to instantiate and allow view to load
+        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        MainPagerAdapter mainPagerAdapter = new MainPagerAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(mainPagerAdapter);
-        TabLayout tabLayout = (TabLayout)findViewById(R.id.sliding_tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-
-
 
 
     }
@@ -52,18 +51,19 @@ public static ArrayList<Movie> getMovies(){
         public void onReceive(Context context, Intent intent) {
             String response = intent.getStringExtra("responseString");
             movies = parsePopularMovies(response);
-
+            recentMovieAdapter.setMovies(movies); // update data on receive
 
 
         }
 
     }
-    private ArrayList<Movie> parsePopularMovies (String jsonString){
+
+    private ArrayList<Movie> parsePopularMovies(String jsonString) {
         ArrayList<Movie> movies = new ArrayList<Movie>();
-        try{
+        try {
             JSONObject jsonObject = new JSONObject(jsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("results");
-            for (int i = 0; i< jsonArray.length();++i){
+            for (int i = 0; i < jsonArray.length(); ++i) {
                 JSONObject jsonMovie = jsonArray.getJSONObject(i);
                 String name = jsonMovie.getString("title");
                 double rating = jsonMovie.getDouble("vote_average");
@@ -72,11 +72,11 @@ public static ArrayList<Movie> getMovies(){
                 String summary = jsonMovie.getString("overview");
                 String detailImageUrl = jsonMovie.getString("backdrop_path");
                 int id = jsonMovie.getInt("id");
-                Movie newMovie = new Movie(id,name,rating,posterImageUrl,releaseDate,summary,detailImageUrl);
+                Movie newMovie = new Movie(id, name, rating, posterImageUrl, releaseDate, summary, detailImageUrl);
                 movies.add(newMovie);
             }
 
-        }catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return movies;

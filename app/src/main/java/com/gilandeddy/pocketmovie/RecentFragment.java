@@ -32,9 +32,8 @@ public class RecentFragment extends Fragment {
         RecyclerView recentRecyclerView = (RecyclerView)view.findViewById(R.id.recentMovieRecycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recentRecyclerView.setLayoutManager(linearLayoutManager);
-        RecentMovieAdapter recentMovieAdapter = new RecentMovieAdapter();
-        ArrayList<Movie> movies = MainActivity.getMovies();
-        recentMovieAdapter.setMovies(movies);
+        RecentMovieAdapter recentMovieAdapter = MainActivity.recentMovieAdapter; // static adapter from MainActivity can be instantiated here
+        recentMovieAdapter.setMovies(MainActivity.getMovies());
         recentRecyclerView.setAdapter(recentMovieAdapter);
 
         // Inflate the layout for this fragment

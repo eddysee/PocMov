@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 public class RecentMovieAdapter extends RecyclerView.Adapter<RecentMovieAdapter.MovieViewHolder> {
-    private List<Movie> movies;
+    private ArrayList<Movie> movies ;
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -56,7 +56,7 @@ public class RecentMovieAdapter extends RecyclerView.Adapter<RecentMovieAdapter.
         }
     }
 
-    public void setMovies(List<Movie> movies) {
+    public void setMovies(ArrayList<Movie> movies) {
         this.movies = movies;
         this.notifyDataSetChanged();
     }
