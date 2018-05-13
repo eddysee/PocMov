@@ -23,6 +23,7 @@
             android:name=".HttpRequestService"
             android:exported="false" />
 
+        <activity android:name=".DetailActivity"></activity>
     </application>
 
 </manifest>

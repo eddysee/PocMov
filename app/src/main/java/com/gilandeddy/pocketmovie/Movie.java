@@ -1,10 +1,12 @@
 package com.gilandeddy.pocketmovie;
 
+import java.io.Serializable;
+
 /**
  * Created by gilbert on 5/12/18.
  */
 
-public class Movie {
+public class Movie implements Serializable{
     private int id;
     private String name;
     private double rating;

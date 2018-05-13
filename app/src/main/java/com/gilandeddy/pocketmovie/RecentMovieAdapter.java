@@ -1,6 +1,7 @@
 package com.gilandeddy.pocketmovie;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +11,23 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by gilbert on 5/12/18.
  */
 
 public class RecentMovieAdapter extends RecyclerView.Adapter<RecentMovieAdapter.MovieViewHolder> {
-    private ArrayList<Movie> movies ;
+
+
+    public static ArrayList<Movie> movies ;
+
+    final private ListItemClickListener listItemClickListener ;
+
+    public RecentMovieAdapter(ListItemClickListener listItemClickListener) {
+        this.listItemClickListener = listItemClickListener;
+    }
+
+
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,14 +60,26 @@ public class RecentMovieAdapter extends RecyclerView.Adapter<RecentMovieAdapter.
 
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder {
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private MovieViewHolder(View itemView){
             super(itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int clickedPosition = this.getAdapterPosition();
+            RecentMovieAdapter.this.listItemClickListener.onListItemClick(clickedPosition);
+            Log.d("tag","item clicked");
         }
     }
 
     public void setMovies(ArrayList<Movie> movies) {
         this.movies = movies;
         this.notifyDataSetChanged();
+    }
+
+    public interface ListItemClickListener{
+        void onListItemClick(int clickedItemIndex);
     }
 }

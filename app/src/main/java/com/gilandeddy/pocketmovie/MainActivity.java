@@ -8,8 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import org.json.JSONArray;
@@ -18,9 +17,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecentMovieAdapter.ListItemClickListener{
     private static ArrayList<Movie> movies = new ArrayList<>();
-    static RecentMovieAdapter recentMovieAdapter = new RecentMovieAdapter(); // Create the adapter early
     private int pageNumber;
 
 
@@ -38,7 +36,10 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("httpRequestComplete");
         registerReceiver(httpReceiver, intentFilter);
-        recentMovieAdapter.setMovies(new ArrayList<Movie>(20)); // set place filler list to instantiate and allow view to load
+
+        RecentMovieAdapter fillerMovieAdapter = new RecentMovieAdapter(this);
+        fillerMovieAdapter.setMovies(new ArrayList<Movie>(20)); // set place filler list to instantiate and allow view to load
+
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         MainPagerAdapter mainPagerAdapter = new MainPagerAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(mainPagerAdapter);
@@ -48,12 +49,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        Log.d("tag", "main activity onlistitemclick");
+
+    }
+
     private class HttpReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             String response = intent.getStringExtra("responseString");
             movies = parsePopularMovies(response);
+            RecentMovieAdapter recentMovieAdapter = RecentFragment.recentMovieAdapter;
             recentMovieAdapter.setMovies(movies); // update data on receive
 
 
