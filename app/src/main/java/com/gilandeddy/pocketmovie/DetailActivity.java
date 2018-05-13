@@ -19,8 +19,12 @@ public class DetailActivity extends AppCompatActivity {
         ImageView detailImageView = findViewById(R.id.detailImageView);
         TextView detailTitleView = findViewById(R.id.detailTitleView);
         TextView summaryView = findViewById(R.id.summaryView);
+        TextView ratingView = findViewById(R.id.ratingDetailView);
+        TextView releaseDateView = findViewById(R.id.releaseDateView);
         detailTitleView.setText(selectedMovie.getName());
         summaryView.setText(selectedMovie.getSummary());
+        ratingView.setText("Rating : " + selectedMovie.getRatingString());
+        releaseDateView.setText(selectedMovie.getReleaseDate());
         Picasso.get().load(TMDBUrl.imageUrlHead + selectedMovie.getDetailImageUrl()).into(detailImageView);
 
     }

@@ -37,7 +37,7 @@ public static RecentMovieAdapter recentMovieAdapter;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recentRecyclerView.setLayoutManager(linearLayoutManager);
         //recentMovieAdapter.setMovies(MainActivity.getMovies());
-        recentMovieAdapter = new RecentMovieAdapter(this);
+        recentMovieAdapter = new RecentMovieAdapter(this); // create the proper RV adapter
         recentRecyclerView.setAdapter(recentMovieAdapter);
         // Inflate the layout for this fragment
         return view;

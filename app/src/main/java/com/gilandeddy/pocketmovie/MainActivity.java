@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity implements RecentMovieAdapte
         intentFilter.addAction("httpRequestComplete");
         registerReceiver(httpReceiver, intentFilter);
 
-        RecentMovieAdapter fillerMovieAdapter = new RecentMovieAdapter(this);
-        fillerMovieAdapter.setMovies(new ArrayList<Movie>(20)); // set place filler list to instantiate and allow view to load
+        RecentMovieAdapter fillerMovieAdapter = new RecentMovieAdapter(this); // create place filler adapter to load layout
+        fillerMovieAdapter.setMovies(new ArrayList<Movie>(20)); // set place filler list to instantiate
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         MainPagerAdapter mainPagerAdapter = new MainPagerAdapter(this, getSupportFragmentManager());
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements RecentMovieAdapte
         public void onReceive(Context context, Intent intent) {
             String response = intent.getStringExtra("responseString");
             movies = parsePopularMovies(response);
-            RecentMovieAdapter recentMovieAdapter = RecentFragment.recentMovieAdapter;
+            RecentMovieAdapter recentMovieAdapter = RecentFragment.recentMovieAdapter; //fetch the proper adapter from Fragment
             recentMovieAdapter.setMovies(movies); // update data on receive
 
 
