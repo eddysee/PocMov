@@ -12,10 +12,10 @@
         android:id="@+id/detailImageView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitXY"
         />
 
     <Button
@@ -36,13 +36,13 @@
 
 
     <TextView
-        
+
         android:id="@+id/detailTitleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_weight="1"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_weight="1"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteX="0dp" />
     </ScrollView>
@@ -78,6 +78,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="23 23 2323"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,6 +93,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Rating : 7.7"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
