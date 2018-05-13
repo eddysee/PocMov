@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,9 +21,10 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private static ArrayList<Movie> movies = new ArrayList<>();
     static RecentMovieAdapter recentMovieAdapter = new RecentMovieAdapter(); // Create the adapter early
+    private int pageNumber;
 
 
-    public static ArrayList<Movie> getMovies() {
+    public static ArrayList<Movie> getMovies() { //allows the RecentFragment to fetch list of movies
        return movies;
     }
 
@@ -30,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        HttpRequestService.startActionRequestHttp(this, TMDBUrl.getPopularUrl(1));
+        pageNumber = 1;
+        HttpRequestService.startActionRequestHttp(this, TMDBUrl.getPopularUrl(pageNumber));
         HttpReceiver httpReceiver = new HttpReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("httpRequestComplete");
@@ -80,5 +83,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return movies;
+    }
+    public void onNextButtonClicked(View view){ // loads the next 20 results
+        pageNumber++ ;
+        HttpRequestService.startActionRequestHttp(this, TMDBUrl.getPopularUrl(pageNumber));
+
+
     }
 }
