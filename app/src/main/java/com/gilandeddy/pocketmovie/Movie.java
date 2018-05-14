@@ -26,6 +26,7 @@ public class Movie implements Serializable{
         this.summary = summary;
         this.detailImageUrl = detailImageUrl;
     }
+    public Movie(){}
 
     public int getId() {
         return id;

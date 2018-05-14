@@ -38,22 +38,32 @@ public class RecentMovieAdapter extends RecyclerView.Adapter<RecentMovieAdapter.
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        Movie movie = movies.get(position);
-        ViewGroup itemViewGroup = (ViewGroup)holder.itemView;
+        ViewGroup itemViewGroup = (ViewGroup) holder.itemView;
         TextView movieTitleView = itemViewGroup.findViewById(R.id.movieTitleView);
         TextView ratingTitleView = itemViewGroup.findViewById(R.id.movieRatingView);
         ImageView posterImageView = itemViewGroup.findViewById(R.id.posterImageView);
-        movieTitleView.setText(movie.getName());
-        ratingTitleView.setText("Rating : " + movie.getRatingString());
-        Picasso.get().load(TMDBUrl.imageUrlHead + movie.getPosterImageUrl()).into(posterImageView);
-
+        TextView nextPageTextView = itemViewGroup.findViewById(R.id.nextPageTextView);
+        if(position < movies.size()) {
+            Movie movie = movies.get(position);
+            nextPageTextView.setVisibility(View.INVISIBLE);
+            movieTitleView.setText(movie.getName());
+            ratingTitleView.setText("Rating : " + movie.getRatingString());
+            Picasso.get().load(TMDBUrl.imageUrlHead + movie.getPosterImageUrl()).into(posterImageView);
+        }
+        else if (position == movies.size()){
+            nextPageTextView.setVisibility(View.VISIBLE);
+            movieTitleView.setVisibility(View.INVISIBLE);
+            ratingTitleView.setVisibility(View.INVISIBLE);
+            posterImageView.setVisibility(View.INVISIBLE);
+        }
 
     }
 
     @Override
     public int getItemCount() {
         if(movies != null){
-            return  movies.size();
+            int listSize = movies.size() + 1 ;
+            return  listSize;
         } else {
             return 0;
         }

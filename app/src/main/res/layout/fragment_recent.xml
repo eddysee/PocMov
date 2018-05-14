@@ -17,16 +17,4 @@
         </android.support.v7.widget.RecyclerView>
 
 
-        <Button
-            android:id="@+id/nextPageButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/nextPage"
-            android:layout_weight="1"
-            android:onClick="onNextButtonClicked"
-            />
-
 </LinearLayout>

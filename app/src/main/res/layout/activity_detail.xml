@@ -100,12 +100,14 @@
         app:layout_constraintTop_toBottomOf="@+id/detailTitleView" />
 
     <CheckBox
+        android:id="@+id/pocketCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:onClick="onPocketClicked"
         android:text="@string/pocket"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
