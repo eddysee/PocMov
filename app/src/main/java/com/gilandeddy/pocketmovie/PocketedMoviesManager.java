@@ -2,8 +2,12 @@ package com.gilandeddy.pocketmovie;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.util.ArrayList;
 
 /**
  * Created by 0504gicarlson on 14/05/2018.
@@ -24,7 +28,14 @@ class PocketedMoviesManager {
     }
 
     public void addMovieToPocket(int id, int inPocket, String title, double rating, String posterPath){
-        pocketDatabaseHelper.insertMovie(id, 1,title,rating,posterPath);
+        pocketDatabaseHelper.insertMovie(id, inPocket,title,rating,posterPath);
+    }
+
+    public void saveRecentMovies(ArrayList<Movie> movies){
+        for (Movie movie: movies)
+        {
+            pocketDatabaseHelper.insertMovie(movie.getId(),0,movie.getName(),movie.getRating(),movie.getPosterImageUrl());
+        }
     }
 
     private PocketedMoviesManager() {
@@ -41,14 +52,19 @@ class PocketedMoviesManager {
 
         @Override
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            String sqlInstruction = "CREATE TABLE POCKET(" +
-                    "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "INPOCKET INTEGER," +
-                    "ID INTEGER," +
-                    "TITLE TEXT," +
-                    "RATING DOUBLE," +
-                    "POSTERPATH TEXT)";
-            sqLiteDatabase.execSQL(sqlInstruction);
+            try {
+                String sqlInstruction = "CREATE TABLE POCKET (" +
+                        "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "ID INTEGER," +
+                        "INPOCKET INTEGER," +
+                        "TITLE TEXT," +
+                        "RATING DOUBLE," +
+                        "POSTERPATH TEXT)";
+                sqLiteDatabase.execSQL(sqlInstruction);
+            }
+            catch (SQLException e){
+                Log.d("tag", "Error creating db : "+e.getMessage());
+            }
         }
 
         @Override
@@ -58,12 +74,17 @@ class PocketedMoviesManager {
 
         public void insertMovie(int id, int inPocket, String title, double rating, String posterPath){
             ContentValues movieValues = new ContentValues();
-            movieValues.put("INPOCKET",1);
             movieValues.put("ID",id);
+            movieValues.put("INPOCKET",inPocket);
             movieValues.put("TITLE", title);
             movieValues.put("RATING",rating);
             movieValues.put("POSTERPATH",posterPath);
-            getWritableDatabase().insert("POCKET",null,movieValues);
+            try {
+                getWritableDatabase().insertOrThrow("POCKET", null, movieValues);
+            }
+            catch (SQLException e){
+                Log.d("tag", "Error inserting db : "+e.getMessage());
+            }
         }
     }
 }

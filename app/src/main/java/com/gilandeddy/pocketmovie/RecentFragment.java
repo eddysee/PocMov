@@ -47,8 +47,8 @@ public class RecentFragment extends Fragment implements RecentMovieAdapter.ListI
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("httpRequestComplete");
         getActivity().registerReceiver(httpReceiver, intentFilter);
-
-
+        PocketedMoviesManager.getInstance().initWithContext(getActivity().getApplicationContext()); // initiating db helper
+        //PocketedMoviesManager.getInstance().addMovieToPocket(1,1,"1",1,"11"); failed test to create a record.
 
 
         RecyclerView recentRecyclerView = (RecyclerView) view.findViewById(R.id.recentMovieRecycler);
@@ -66,9 +66,8 @@ public class RecentFragment extends Fragment implements RecentMovieAdapter.ListI
             String response = intent.getStringExtra("responseString");
             movies.addAll(parsePopularMovies(response));
             RecentMovieAdapter recentMovieAdapter = RecentFragment.recentMovieAdapter; //fetch the proper adapter from Fragment
-            recentMovieAdapter.setMovies(movies); // update data on receive
-
-
+            recentMovieAdapter.setMovies(movies);
+            PocketedMoviesManager.getInstance().saveRecentMovies(movies); // expected this to create table and add 20 records
         }
 
     }

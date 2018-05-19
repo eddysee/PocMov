@@ -28,6 +28,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(mainPagerAdapter);
         TabLayout tabLayout = findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-        PocketedMoviesManager.getInstance().initWithContext(getApplicationContext());
+
     }
 }
