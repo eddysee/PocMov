@@ -3,6 +3,7 @@ package com.gilandeddy.pocketmovie;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -44,14 +45,15 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onPocketClicked(View view) {
+        Log.d("tag","onpocketclicked");
         if (checkBox.isChecked()) {
             // remove from DB and set to false in view AND in selectedMovie
         } else {
             // add to DB and set to true in view AND in selectedMovie
             selectedMovie.setInPocket(true);
             checkBox.setChecked(true);
-            PocketedMoviesManager.getInstance().addMovieToPocket(selectedMovie.getId(), selectedMovie.getName(), selectedMovie.getRating(), selectedMovie.getPosterImageUrl());
+            PocketedMoviesManager.getInstance().addMovieToPocket(selectedMovie.getId(), 1,selectedMovie.getName(), selectedMovie.getRating(), selectedMovie.getPosterImageUrl());
 
-        }
+       }
     }
 }

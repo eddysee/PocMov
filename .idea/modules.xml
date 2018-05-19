@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/PocketMovie.iml" filepath="$PROJECT_DIR$/.idea/PocketMovie.iml" />
-      <module fileurl="file://V:\PocketMovie\PocketMovie.iml" filepath="V:\PocketMovie\PocketMovie.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://V:\PocketMovie\app\app.iml" filepath="V:\PocketMovie\app\app.iml" />
     </modules>
   </component>
 </project>
