@@ -48,7 +48,7 @@ public class DetailActivity extends AppCompatActivity {
         ratingView = findViewById(R.id.ratingDetailView);
         releaseDateView = findViewById(R.id.releaseDateView);
         checkBox = findViewById(R.id.pocketCheckBox);
-        checkBox.setChecked(selectedMovie.isInPocket());
+        // TODO replace by sql read : checkBox.setChecked(selectedMovie.isInPocket());
         detailTitleView.setText(selectedMovie.getName());
         summaryView.setText(selectedMovie.getSummary());
         ratingView.setText("Rating : " + selectedMovie.getRatingString());
@@ -97,8 +97,10 @@ public class DetailActivity extends AppCompatActivity {
 
     public void onPocketClicked(View view) {
         Log.d("tag", "onpocketclicked");
+        PocketedMoviesManager.getInstance().addMovieToPocket(selectedMovie.getId(), 1, selectedMovie.getName(), selectedMovie.getRating(), selectedMovie.getPosterImageUrl());
+        //TODO toggle logic and read/update/delete sqldb
         boolean checked = ((CheckBox) view).isChecked();
-        if (checked) {
+        /*if (checked) {
             // remove from DB and set to false in view AND in selectedMovie
             selectedMovie.setInPocket(false);
             ((CheckBox) view).toggle();
@@ -109,7 +111,7 @@ public class DetailActivity extends AppCompatActivity {
             ((CheckBox) view).toggle();
             PocketedMoviesManager.getInstance().addMovieToPocket(selectedMovie.getId(), 1, selectedMovie.getName(), selectedMovie.getRating(), selectedMovie.getPosterImageUrl());
 
-        }
+        }*/
 
     }
 

@@ -41,7 +41,7 @@ public class PocketedMoviesManager {
 
     public ArrayList<Movie> getAllMovies(){
         Cursor cursor = pocketDatabaseHelper.getReadableDatabase().query("POCKET",new String[]{"_id","ID","INPOCKET","TITLE","RATING","POSTERPATH"},
-                null,null,null,null,null,null);
+                "INPOCKET = ?", new String[]{"1"},null,null,null,null);
         ArrayList<Movie> movies = new ArrayList<>();
         for (int i=0; i <cursor.getCount();i++){
             if (cursor.moveToNext()){

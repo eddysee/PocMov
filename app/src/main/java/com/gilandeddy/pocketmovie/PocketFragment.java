@@ -18,8 +18,8 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PocketFragment extends Fragment implements RecentMovieAdapter.ListItemClickListener{
-    public static RecentMovieAdapter recentMovieAdapter;
+public class PocketFragment extends Fragment implements MovieRecyclerAdapter.ListItemClickListener{
+    public static MovieRecyclerAdapter pocketRecyclerAdapter;
     private static ArrayList<Movie> pocketMovies = new ArrayList<>();
 
 
@@ -29,6 +29,7 @@ public class PocketFragment extends Fragment implements RecentMovieAdapter.ListI
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,12 +37,12 @@ public class PocketFragment extends Fragment implements RecentMovieAdapter.ListI
         RecyclerView pocketRecyclerView = view.findViewById(R.id.pocketMovieRecycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         pocketRecyclerView.setLayoutManager(linearLayoutManager);
-        recentMovieAdapter = new RecentMovieAdapter(this); // create the proper RV adapter
-        pocketRecyclerView.setAdapter(recentMovieAdapter);
+        pocketRecyclerAdapter = new MovieRecyclerAdapter(this);
+        pocketRecyclerView.setAdapter(pocketRecyclerAdapter);
         pocketMovies.addAll(PocketedMoviesManager.getInstance().getAllMovies());
-        recentMovieAdapter.setMovies(pocketMovies);
-
+        pocketRecyclerAdapter.setMovies(pocketMovies);
         return view;
+        //TODO get the fragment to refresh the pocketmovies on each load (onresume?)
     }
 
     @Override

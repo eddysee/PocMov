@@ -29,9 +29,9 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecentFragment extends Fragment implements RecentMovieAdapter.ListItemClickListener {
+public class RecentFragment extends Fragment implements MovieRecyclerAdapter.ListItemClickListener {
     private static ArrayList<Movie> movies = new ArrayList<>();
-    public static RecentMovieAdapter recentMovieAdapter;
+    public static MovieRecyclerAdapter movieRecyclerAdapter;
     private int pageNumber;
 
     public RecentFragment() {
@@ -56,8 +56,8 @@ public class RecentFragment extends Fragment implements RecentMovieAdapter.ListI
         RecyclerView recentRecyclerView = view.findViewById(R.id.recentMovieRecycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recentRecyclerView.setLayoutManager(linearLayoutManager);
-        recentMovieAdapter = new RecentMovieAdapter(this); // create the proper RV adapter
-        recentRecyclerView.setAdapter(recentMovieAdapter);
+        movieRecyclerAdapter = new MovieRecyclerAdapter(this); // create the proper RV adapter
+        recentRecyclerView.setAdapter(movieRecyclerAdapter);
 
         return view;
 
@@ -68,9 +68,8 @@ public class RecentFragment extends Fragment implements RecentMovieAdapter.ListI
         public void onReceive(Context context, Intent intent) {
             String response = intent.getStringExtra("responseString");
             movies.addAll(parsePopularMovies(response));
-            RecentMovieAdapter recentMovieAdapter = RecentFragment.recentMovieAdapter; //fetch the proper adapter from Fragment
-            recentMovieAdapter.setMovies(movies);
-            PocketedMoviesManager.getInstance().saveRecentMovies(movies); // expected this to create table and add 20 records
+            MovieRecyclerAdapter movieRecyclerAdapter = RecentFragment.movieRecyclerAdapter; //fetch the proper adapter from Fragment
+            movieRecyclerAdapter.setMovies(movies);
         }
 
     }
@@ -104,7 +103,7 @@ public class RecentFragment extends Fragment implements RecentMovieAdapter.ListI
     public void onListItemClick(int clickedItemIndex) {
         Log.d("tag", "recent fragment onlistItemclick");
         if (clickedItemIndex < movies.size()) {
-            Movie selectedMovie = RecentMovieAdapter.movies.get(clickedItemIndex);
+            Movie selectedMovie = MovieRecyclerAdapter.movies.get(clickedItemIndex);
             Intent detailIntent = new Intent(getContext(), DetailActivity.class);
             detailIntent.putExtra("movieObject", selectedMovie);
             startActivity(detailIntent);
