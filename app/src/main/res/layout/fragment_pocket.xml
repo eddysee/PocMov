@@ -2,13 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.gilandeddy.pocketmovie.PocketFragment">
+    tools:context="com.gilandeddy.pocketmovie.PocketFragment"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/pocketFiller"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/pocketMovieRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Pocket List goes here" />
+        android:layout_height="wrap_content"
+        android:layout_weight="9">
+
+    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

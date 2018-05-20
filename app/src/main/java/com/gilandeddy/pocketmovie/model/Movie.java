@@ -1,4 +1,4 @@
-package com.gilandeddy.pocketmovie;
+package com.gilandeddy.pocketmovie.model;
 
 import java.io.Serializable;
 
@@ -27,6 +27,14 @@ public class Movie implements Serializable{
         this.detailImageUrl = detailImageUrl;
     }
     public Movie(){}
+
+    public Movie(int id, boolean isInPocket, String name, double rating, String posterImageUrl){
+        this.id = id;
+        this.isInPocket = isInPocket;
+        this.name = name;
+        this.rating = rating;
+        this.posterImageUrl = posterImageUrl;
+    }
 
     public int getId() {
         return id;

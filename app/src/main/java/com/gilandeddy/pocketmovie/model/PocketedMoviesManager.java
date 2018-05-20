@@ -1,7 +1,8 @@
-package com.gilandeddy.pocketmovie;
+package com.gilandeddy.pocketmovie.model;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -13,10 +14,10 @@ import java.util.ArrayList;
  * Created by 0504gicarlson on 14/05/2018.
  */
 
-class PocketedMoviesManager {
+public class PocketedMoviesManager {
     private static final PocketedMoviesManager ourInstance = new PocketedMoviesManager();
 
-    static PocketedMoviesManager getInstance() {
+    public static PocketedMoviesManager getInstance() {
         return ourInstance;
     }
     private PocketDatabaseHelper pocketDatabaseHelper;
@@ -38,11 +39,39 @@ class PocketedMoviesManager {
         }
     }
 
+    public ArrayList<Movie> getAllMovies(){
+        Cursor cursor = pocketDatabaseHelper.getReadableDatabase().query("POCKET",new String[]{"_id","ID","INPOCKET","TITLE","RATING","POSTERPATH"},
+                null,null,null,null,null,null);
+        ArrayList<Movie> movies = new ArrayList<>();
+        for (int i=0; i <cursor.getCount();i++){
+            if (cursor.moveToNext()){
+                int id = cursor.getInt(1);
+                int inPocket = cursor.getInt(2);
+                String title = cursor.getString(3);
+                double rating = cursor.getDouble(4);
+                String posterPath = cursor.getString(5);
+                Movie movie = MovieMaker(id,inPocket,title,rating,posterPath);
+                movies.add(movie);
+            }
+        }
+        cursor.close();
+        return movies;
+    }
+
     private PocketedMoviesManager() {
     }
 
+    private Movie MovieMaker(int id, int inPocket, String title, double rating, String posterPath){
+        boolean isInPocket = false;
+        if (inPocket == 1) {
+            isInPocket = true; // converts the SQL 1/0 into a boolean
+        }
+        Movie movie = new Movie(id,isInPocket,title,rating,posterPath);
+        return movie;
+    }
+
     private class PocketDatabaseHelper extends SQLiteOpenHelper{
-        private static final String DB_NAME = "PocketedMoviesDB";
+        private static final String DB_NAME = "PocketedMoviesDataBase";
         private static final int DB_VERSION = 1;
 
         PocketDatabaseHelper(Context context){

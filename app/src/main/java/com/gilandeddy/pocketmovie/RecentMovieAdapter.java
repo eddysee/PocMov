@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gilandeddy.pocketmovie.model.Movie;
+import com.gilandeddy.pocketmovie.model.TMDBUrl;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -48,7 +50,7 @@ public class RecentMovieAdapter extends RecyclerView.Adapter<RecentMovieAdapter.
             nextPageTextView.setVisibility(View.INVISIBLE);
             movieTitleView.setText(movie.getName());
             ratingTitleView.setText("Rating : " + movie.getRatingString());
-            Picasso.get().load(TMDBUrl.imageUrlHead + movie.getPosterImageUrl()).into(posterImageView);
+            Picasso.get().load(TMDBUrl.getImageUrlHead() + movie.getPosterImageUrl()).into(posterImageView);
         }
         else if (position == movies.size()){
             nextPageTextView.setVisibility(View.VISIBLE);

@@ -1,4 +1,4 @@
-package com.gilandeddy.pocketmovie;
+package com.gilandeddy.pocketmovie.model;
 
 import android.app.IntentService;
 import android.content.Context;

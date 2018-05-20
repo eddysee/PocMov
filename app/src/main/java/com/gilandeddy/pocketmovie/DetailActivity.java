@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +13,10 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gilandeddy.pocketmovie.model.HttpRequestService;
+import com.gilandeddy.pocketmovie.model.Movie;
+import com.gilandeddy.pocketmovie.model.PocketedMoviesManager;
+import com.gilandeddy.pocketmovie.model.TMDBUrl;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -50,7 +53,7 @@ public class DetailActivity extends AppCompatActivity {
         summaryView.setText(selectedMovie.getSummary());
         ratingView.setText("Rating : " + selectedMovie.getRatingString());
         releaseDateView.setText(selectedMovie.getReleaseDate());
-        Picasso.get().load(TMDBUrl.imageUrlHead + selectedMovie.getDetailImageUrl()).into(detailImageView);
+        Picasso.get().load(TMDBUrl.getImageUrlHead() + selectedMovie.getDetailImageUrl()).into(detailImageView);
         HttpRequestService.startActionRequestHttp(this, TMDBUrl.getVideoUrl(selectedMovie.getId()));
         HttpReceiver httpReceiver = new HttpReceiver();
         IntentFilter intentFilter = new IntentFilter();
@@ -93,7 +96,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onPocketClicked(View view) {
-        PocketedMoviesManager.getInstance().addMovieToPocket(selectedMovie.getId(), 0, selectedMovie.getName(), selectedMovie.getRating(), selectedMovie.getPosterImageUrl());
         Log.d("tag", "onpocketclicked");
         boolean checked = ((CheckBox) view).isChecked();
         if (checked) {

@@ -1,13 +1,11 @@
 package com.gilandeddy.pocketmovie;
 
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.gilandeddy.pocketmovie.model.HttpRequestService;
+import com.gilandeddy.pocketmovie.model.Movie;
+import com.gilandeddy.pocketmovie.model.PocketedMoviesManager;
+import com.gilandeddy.pocketmovie.model.TMDBUrl;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,14 +51,14 @@ public class RecentFragment extends Fragment implements RecentMovieAdapter.ListI
         intentFilter.addAction("httpRequestComplete");
         getActivity().registerReceiver(httpReceiver, intentFilter);
         PocketedMoviesManager.getInstance().initWithContext(getActivity().getApplicationContext()); // initiating db helper
-        //PocketedMoviesManager.getInstance().addMovieToPocket(1,1,"1",1,"11"); failed test to create a record.
 
 
-        RecyclerView recentRecyclerView = (RecyclerView) view.findViewById(R.id.recentMovieRecycler);
+        RecyclerView recentRecyclerView = view.findViewById(R.id.recentMovieRecycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recentRecyclerView.setLayoutManager(linearLayoutManager);
         recentMovieAdapter = new RecentMovieAdapter(this); // create the proper RV adapter
         recentRecyclerView.setAdapter(recentMovieAdapter);
+
         return view;
 
     }
@@ -73,7 +76,7 @@ public class RecentFragment extends Fragment implements RecentMovieAdapter.ListI
     }
 
     private ArrayList<Movie> parsePopularMovies(String jsonString) {
-        ArrayList<Movie> movies = new ArrayList<Movie>();
+        ArrayList<Movie> movies = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("results");
@@ -95,10 +98,6 @@ public class RecentFragment extends Fragment implements RecentMovieAdapter.ListI
         }
         return movies;
     }
-   // public void onNextButtonClicked(View view){ // loads the next 20 results
-     //   pageNumber++ ;
-       // HttpRequestService.startActionRequestHttp(getContext(), TMDBUrl.getPopularUrl(pageNumber));
-    //}
 
 
     @Override

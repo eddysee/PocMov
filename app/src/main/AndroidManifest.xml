@@ -20,7 +20,7 @@
         </activity>
 
         <service
-            android:name=".HttpRequestService"
+            android:name=".model.HttpRequestService"
             android:exported="false" />
 
         <activity android:name=".DetailActivity">
