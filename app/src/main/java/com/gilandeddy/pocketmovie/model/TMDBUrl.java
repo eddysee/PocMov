@@ -22,5 +22,10 @@ public class TMDBUrl {
         return createdURL;
     }
 
+    public static String getDetailsURL (int id) {
+        String createdURL = baseURL + id + "?api_key=" + apiKey;
+        return createdURL;
+    }
+
 }
 

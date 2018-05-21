@@ -1,16 +1,26 @@
 package com.gilandeddy.pocketmovie;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.gilandeddy.pocketmovie.model.HttpRequestService;
 import com.gilandeddy.pocketmovie.model.Movie;
 import com.gilandeddy.pocketmovie.model.PocketedMoviesManager;
+import com.gilandeddy.pocketmovie.model.TMDBUrl;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -39,9 +49,8 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
         pocketRecyclerView.setAdapter(pocketRecyclerAdapter);
         pocketMovies.addAll(PocketedMoviesManager.getInstance().getAllMovies());
         pocketRecyclerAdapter.setMovies(pocketMovies);
+
         return view;
-        //TODO get the fragment to refresh the pocketmovies on each load (onresume?)
-        //onresume causes crashes , and wrong loading of recycleradapter . why ??
     }
 
     //refreshes the RV each time it becomes visible
@@ -60,9 +69,46 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
         }
     }
 
-        @Override
-        public void onListItemClick ( int clickedItemIndex){
-
-        }
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        Log.d("tag", "pocket fragment onclick clicked");
+        Movie selectedMovie = PocketRecyclerAdapter.movies.get(clickedItemIndex);
+        HttpRequestService.startActionRequestHttp(getContext(), TMDBUrl.getDetailsURL(selectedMovie.getId()));
+        HttpReceiver httpReceiver = new HttpReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("httpRequestComplete");
+        getActivity().registerReceiver(httpReceiver,intentFilter);
     }
+
+    private class HttpReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String response = intent.getStringExtra("response string");
+            Movie selectedMovie = parseMovieDetails(response);
+            Intent detailIntent = new Intent(getContext(), DetailActivity.class);
+            detailIntent.putExtra("movieObject", selectedMovie);
+            startActivity(detailIntent);
+        }
+
+    }
+    private Movie parseMovieDetails(String jsonString){
+        Movie newMovie = new Movie();
+        try {
+            JSONObject jsonMovie = new JSONObject(jsonString);
+            String name = jsonMovie.getString("title");
+            double rating = jsonMovie.getDouble("vote_average");
+            String posterImageUrl = jsonMovie.getString("poster_path");
+            String releaseDate = jsonMovie.getString("release_date");
+            String summary = jsonMovie.getString("overview");
+            String detailImageUrl = jsonMovie.getString("backdrop_path");
+            int id = jsonMovie.getInt("id");
+            newMovie = new Movie(id, name, rating, posterImageUrl, releaseDate, summary, detailImageUrl);
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return newMovie;
+    }
+}
 
