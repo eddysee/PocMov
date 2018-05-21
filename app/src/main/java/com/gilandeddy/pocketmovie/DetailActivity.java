@@ -34,6 +34,7 @@ public class DetailActivity extends AppCompatActivity {
     CheckBox checkBox;
     Movie selectedMovie;
     String youtubeID;
+    boolean isInPocket;
 
 
     @Override
@@ -48,6 +49,8 @@ public class DetailActivity extends AppCompatActivity {
         ratingView = findViewById(R.id.ratingDetailView);
         releaseDateView = findViewById(R.id.releaseDateView);
         checkBox = findViewById(R.id.pocketCheckBox);
+        isInPocket = PocketedMoviesManager.getInstance().isInPocketDatabase(selectedMovie.getId());
+        checkBox.setChecked(isInPocket);
         // TODO replace by sql read : checkBox.setChecked(selectedMovie.isInPocket());
         detailTitleView.setText(selectedMovie.getName());
         summaryView.setText(selectedMovie.getSummary());
@@ -59,6 +62,7 @@ public class DetailActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("httpRequestComplete");
         registerReceiver(httpReceiver,intentFilter);
+        // Leaked intent receiver error happens here often 1
 
     }
 
@@ -97,21 +101,16 @@ public class DetailActivity extends AppCompatActivity {
 
     public void onPocketClicked(View view) {
         Log.d("tag", "onpocketclicked");
-        PocketedMoviesManager.getInstance().addMovieToPocket(selectedMovie.getId(), 1, selectedMovie.getName(), selectedMovie.getRating(), selectedMovie.getPosterImageUrl());
-        //TODO toggle logic and read/update/delete sqldb
-        boolean checked = ((CheckBox) view).isChecked();
-        /*if (checked) {
-            // remove from DB and set to false in view AND in selectedMovie
-            selectedMovie.setInPocket(false);
-            ((CheckBox) view).toggle();
+        if (isInPocket){
+            PocketedMoviesManager.getInstance().deleteMovieInPocket(selectedMovie.getId());
+            isInPocket = false;
+            checkBox.setChecked(isInPocket);
 
-        } else {
-            // add to DB and set to true in view AND in selectedMovie
-            selectedMovie.setInPocket(true);
-            ((CheckBox) view).toggle();
+        }else {
             PocketedMoviesManager.getInstance().addMovieToPocket(selectedMovie.getId(), 1, selectedMovie.getName(), selectedMovie.getRating(), selectedMovie.getPosterImageUrl());
-
-        }*/
+            isInPocket = true;
+            checkBox.setChecked(isInPocket);
+        }
 
     }
 

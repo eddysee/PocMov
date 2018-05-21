@@ -18,16 +18,14 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PocketFragment extends Fragment implements MovieRecyclerAdapter.ListItemClickListener{
-    public static MovieRecyclerAdapter pocketRecyclerAdapter;
+public class PocketFragment extends Fragment implements PocketRecyclerAdapter.ListItemClickListener {
+    public static PocketRecyclerAdapter pocketRecyclerAdapter;
     private static ArrayList<Movie> pocketMovies = new ArrayList<>();
-
 
 
     public PocketFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -37,16 +35,34 @@ public class PocketFragment extends Fragment implements MovieRecyclerAdapter.Lis
         RecyclerView pocketRecyclerView = view.findViewById(R.id.pocketMovieRecycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         pocketRecyclerView.setLayoutManager(linearLayoutManager);
-        pocketRecyclerAdapter = new MovieRecyclerAdapter(this);
+        pocketRecyclerAdapter = new PocketRecyclerAdapter(this);
         pocketRecyclerView.setAdapter(pocketRecyclerAdapter);
         pocketMovies.addAll(PocketedMoviesManager.getInstance().getAllMovies());
         pocketRecyclerAdapter.setMovies(pocketMovies);
         return view;
         //TODO get the fragment to refresh the pocketmovies on each load (onresume?)
+        //onresume causes crashes , and wrong loading of recycleradapter . why ??
     }
 
+    //refreshes the RV each time it becomes visible
     @Override
-    public void onListItemClick(int clickedItemIndex) {
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            ArrayList<Movie> freshPocket = new ArrayList<>();
+            freshPocket = PocketedMoviesManager.getInstance().getAllMovies();
+            if (pocketMovies.equals(freshPocket)) {
 
+            } else {
+                pocketRecyclerAdapter.setMovies(freshPocket);
+
+            }
+        }
     }
-}
+
+        @Override
+        public void onListItemClick ( int clickedItemIndex){
+
+        }
+    }
+

@@ -32,11 +32,36 @@ public class PocketedMoviesManager {
         pocketDatabaseHelper.insertMovie(id, inPocket,title,rating,posterPath);
     }
 
-    public void saveRecentMovies(ArrayList<Movie> movies){
+    public void updateMovieInPocket(int id, int inPocket){
+        pocketDatabaseHelper.updateMovie(id,inPocket);
+    }
+
+    public void deleteMovieInPocket(int id){
+        pocketDatabaseHelper.deleteMovie(id);
+    }
+
+    /*public void saveRecentMovies(ArrayList<Movie> movies){
         for (Movie movie: movies)
         {
             pocketDatabaseHelper.insertMovie(movie.getId(),0,movie.getName(),movie.getRating(),movie.getPosterImageUrl());
         }
+    }*/
+
+    //Should return true if the Movie id exists and inpocket is 1
+    //currently not working great
+    public boolean isInPocketDatabase(int id){
+        String idString = Integer.toString(id);
+        Cursor cursor = pocketDatabaseHelper.getReadableDatabase().query("POCKET",new String[]{"_id","INPOCKET"},"ID = " + idString,null,null,null,null);
+        if (cursor.moveToNext()){
+            if (cursor.getInt(1) == 1){
+                Log.d("tag","value of cursor.getint = 1");
+                cursor.close();
+                return true;
+            }
+        }
+        Log.d("tag ","value of cursor.getint != 1");
+        cursor.close();
+        return false;
     }
 
     public ArrayList<Movie> getAllMovies(){
@@ -58,9 +83,12 @@ public class PocketedMoviesManager {
         return movies;
     }
 
+
+
     private PocketedMoviesManager() {
     }
 
+    // Constructor for Movie that takes inPocket as an int and turns it into boolean isInPocket
     private Movie MovieMaker(int id, int inPocket, String title, double rating, String posterPath){
         boolean isInPocket = false;
         if (inPocket == 1) {
@@ -115,5 +143,26 @@ public class PocketedMoviesManager {
                 Log.d("tag", "Error inserting db : "+e.getMessage());
             }
         }
+        public void updateMovie(int id, int inPocket){
+            ContentValues movieValues = new ContentValues();
+            movieValues.put("ID",id);
+            movieValues.put("INPOCKET",inPocket);
+            String idString = Integer.toString(id);
+            try {
+                getWritableDatabase().update("POCKET",movieValues,"ID = ?",new String[]{idString});
+            }
+            catch (SQLException e){
+                Log.d("tag", "Error updating db : " + e.getMessage());
+            }
+        }
+
+        public void deleteMovie(int id){
+            String idString = Integer.toString(id);
+            getWritableDatabase().delete("POCKET","ID = ?",new String[]{idString});
+        }
+
+
+
+
     }
 }
