@@ -33,6 +33,7 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
     private static ArrayList<Movie> pocketMovies = new ArrayList<>();
 
 
+
     public PocketFragment() {
         // Required empty public constructor
     }
@@ -84,7 +85,7 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String response = intent.getStringExtra("response string");
+            String response = intent.getStringExtra("responseString");
             Movie selectedMovie = parseMovieDetails(response);
             Intent detailIntent = new Intent(getContext(), DetailActivity.class);
             detailIntent.putExtra("movieObject", selectedMovie);
@@ -94,21 +95,25 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
     }
     private Movie parseMovieDetails(String jsonString){
         Movie newMovie = new Movie();
-        try {
-            JSONObject jsonMovie = new JSONObject(jsonString);
-            String name = jsonMovie.getString("title");
-            double rating = jsonMovie.getDouble("vote_average");
-            String posterImageUrl = jsonMovie.getString("poster_path");
-            String releaseDate = jsonMovie.getString("release_date");
-            String summary = jsonMovie.getString("overview");
-            String detailImageUrl = jsonMovie.getString("backdrop_path");
-            int id = jsonMovie.getInt("id");
-            newMovie = new Movie(id, name, rating, posterImageUrl, releaseDate, summary, detailImageUrl);
+        if (jsonString != null ) {
+            try {
+                JSONObject jsonMovie = new JSONObject(jsonString);
+                String name = jsonMovie.getString("title");
+                double rating = jsonMovie.getDouble("vote_average");
+                String posterImageUrl = jsonMovie.getString("poster_path");
+                String releaseDate = jsonMovie.getString("release_date");
+                String summary = jsonMovie.getString("overview");
+                String detailImageUrl = jsonMovie.getString("backdrop_path");
+                int id = jsonMovie.getInt("id");
+                newMovie = new Movie(id, name, rating, posterImageUrl, releaseDate, summary, detailImageUrl);
 
-        }catch (JSONException e){
-            e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return newMovie;
         }
-        return newMovie;
+        Log.d("TAG", "jsonMovie empty, bullshit movie returned");
+        return new Movie(666,"Fake Movie",6.6,"","25-12-0000"," a fake movie place holder","");
     }
 }
 

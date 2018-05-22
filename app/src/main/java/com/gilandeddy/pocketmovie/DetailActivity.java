@@ -37,6 +37,7 @@ public class DetailActivity extends AppCompatActivity {
     boolean isInPocket;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,17 +52,11 @@ public class DetailActivity extends AppCompatActivity {
         checkBox = findViewById(R.id.pocketCheckBox);
         isInPocket = PocketedMoviesManager.getInstance().isInPocketDatabase(selectedMovie.getId());
         checkBox.setChecked(isInPocket);
-        // TODO replace by sql read : checkBox.setChecked(selectedMovie.isInPocket());
         detailTitleView.setText(selectedMovie.getName());
         summaryView.setText(selectedMovie.getSummary());
         ratingView.setText("Rating : " + selectedMovie.getRatingString());
         releaseDateView.setText(selectedMovie.getReleaseDate());
         Picasso.get().load(TMDBUrl.getImageUrlHead() + selectedMovie.getDetailImageUrl()).into(detailImageView);
-        HttpRequestService.startActionRequestHttp(this, TMDBUrl.getVideoUrl(selectedMovie.getId()));
-        HttpReceiver httpReceiver = new HttpReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("httpRequestComplete");
-        registerReceiver(httpReceiver,intentFilter);
         // Leaked intent receiver error happens here often 1
 
     }
@@ -72,6 +67,8 @@ public class DetailActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String response = intent.getStringExtra("responseString");
             youtubeID = parseTrailerYoutubeID(response);
+            Intent playTrailer = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + youtubeID));
+            startActivity(playTrailer);
 
         }
     }
@@ -115,9 +112,13 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onVideoClicked(View view){
+        HttpRequestService.startActionRequestHttp(this, TMDBUrl.getVideoUrl(selectedMovie.getId()));
+        HttpReceiver httpReceiver = new HttpReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("httpRequestComplete");
+        registerReceiver(httpReceiver,intentFilter);
 
-        Intent playTrailer = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + youtubeID));
-        startActivity(playTrailer);
+
 
 
     }

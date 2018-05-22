@@ -34,6 +34,8 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
     public static MovieRecyclerAdapter movieRecyclerAdapter;
     private int pageNumber;
 
+
+
     public RecentFragment() {
         // Required empty public constructor
     }
