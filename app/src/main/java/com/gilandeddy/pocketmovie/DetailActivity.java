@@ -57,6 +57,7 @@ public class DetailActivity extends AppCompatActivity {
         ratingView.setText("Rating : " + selectedMovie.getRatingString());
         releaseDateView.setText(selectedMovie.getReleaseDate());
         Picasso.get().load(TMDBUrl.getImageUrlHead() + selectedMovie.getDetailImageUrl()).into(detailImageView);
+        Log.d("Tag", "Detail Activity Created");
         // Leaked intent receiver error happens here often 1
 
     }

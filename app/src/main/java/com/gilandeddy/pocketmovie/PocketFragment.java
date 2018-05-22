@@ -34,6 +34,7 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
 
 
 
+
     public PocketFragment() {
         // Required empty public constructor
     }
@@ -51,24 +52,23 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
         pocketMovies.addAll(PocketedMoviesManager.getInstance().getAllMovies());
         pocketRecyclerAdapter.setMovies(pocketMovies);
 
+
         return view;
     }
 
-    //refreshes the RV each time it becomes visible
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            ArrayList<Movie> freshPocket = new ArrayList<>();
-            freshPocket = PocketedMoviesManager.getInstance().getAllMovies();
-            if (pocketMovies.equals(freshPocket)) {
+    public void onStart() {
+        super.onStart();
+        ArrayList<Movie> freshPocket = new ArrayList<>();
+        freshPocket = PocketedMoviesManager.getInstance().getAllMovies();
+        if ( pocketMovies != null && pocketMovies.equals(freshPocket)) {
 
-            } else {
-                pocketRecyclerAdapter.setMovies(freshPocket);
+        } else {
+            pocketRecyclerAdapter.setMovies(freshPocket);
 
-            }
         }
     }
+
 
     @Override
     public void onListItemClick(int clickedItemIndex) {
@@ -85,6 +85,7 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d("tag","OnReceive called in pocket fragment");
             String response = intent.getStringExtra("responseString");
             Movie selectedMovie = parseMovieDetails(response);
             Intent detailIntent = new Intent(getContext(), DetailActivity.class);

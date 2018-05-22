@@ -68,6 +68,7 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d("tag","OnReceive Called in RECENT fragment");
             String response = intent.getStringExtra("responseString");
             movies.addAll(parsePopularMovies(response));
             MovieRecyclerAdapter movieRecyclerAdapter = RecentFragment.movieRecyclerAdapter; //fetch the proper adapter from Fragment
