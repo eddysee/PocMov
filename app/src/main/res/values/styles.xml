@@ -6,11 +6,14 @@
         <item name="colorPrimary">#333333</item>
         <item name="colorPrimaryDark">#333333</item>
         <item name="colorAccent">#5DBCD2</item>
+        <item name="android:actionMenuTextColor">@color/colorText</item>
+        <item name="android:actionMenuTextAppearance">@color/colorMain</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
