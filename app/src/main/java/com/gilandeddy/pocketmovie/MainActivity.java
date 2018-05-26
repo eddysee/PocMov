@@ -19,8 +19,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
 import android.view.Menu;
 import android.widget.ShareActionProvider;
+
+import com.gilandeddy.pocketmovie.model.Movie;
+import com.gilandeddy.pocketmovie.model.PocketedMoviesManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,24 +48,21 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
 
-        getMenuInflater().inflate(R.menu.menu_main_tab,menu);
+        getMenuInflater().inflate(R.menu.menu_main_tab, menu);
         MenuItem sharePocket = menu.findItem(R.id.action_share);
         shareActionProvider = MenuItemCompat.getActionProvider(sharePocket);
         sharePocket.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             @Override
             public boolean onMenuItemClick(MenuItem sharePocket) {
-                String message = new String("Wanna watch");
+                String message = new String("Wanna watch" + PocketFragment.getPocketMovies());
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_TEXT,message);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, message);
                 startActivity(shareIntent);
-
-
                 return true;
             }
         });
-
 
 
         return true;

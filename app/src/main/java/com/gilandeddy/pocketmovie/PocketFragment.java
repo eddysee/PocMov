@@ -33,8 +33,6 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
     private static ArrayList<Movie> pocketMovies = new ArrayList<>();
 
 
-
-
     public PocketFragment() {
         // Required empty public constructor
     }
@@ -61,7 +59,7 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
         super.onStart();
         ArrayList<Movie> freshPocket = new ArrayList<>();
         freshPocket = PocketedMoviesManager.getInstance().getAllMovies();
-        if ( pocketMovies != null && pocketMovies.equals(freshPocket)) {
+        if (pocketMovies != null && pocketMovies.equals(freshPocket)) {
 
         } else {
             pocketRecyclerAdapter.setMovies(freshPocket);
@@ -78,14 +76,14 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
         HttpReceiver httpReceiver = new HttpReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("httpRequestComplete");
-        getActivity().registerReceiver(httpReceiver,intentFilter);
+        getActivity().registerReceiver(httpReceiver, intentFilter);
     }
 
     private class HttpReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d("tag","OnReceive called in pocket fragment");
+            Log.d("tag", "OnReceive called in pocket fragment");
             String response = intent.getStringExtra("responseString");
             Movie selectedMovie = parseMovieDetails(response);
             Intent detailIntent = new Intent(getContext(), DetailActivity.class);
@@ -94,9 +92,10 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
         }
 
     }
-    private Movie parseMovieDetails(String jsonString){
+
+    private Movie parseMovieDetails(String jsonString) {
         Movie newMovie = new Movie();
-        if (jsonString != null ) {
+        if (jsonString != null) {
             try {
                 JSONObject jsonMovie = new JSONObject(jsonString);
                 String name = jsonMovie.getString("title");
@@ -114,7 +113,19 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
             return newMovie;
         }
         Log.d("TAG", "jsonMovie empty, bullshit movie returned");
-        return new Movie(666,"Fake Movie",6.6,"","25-12-0000"," a fake movie place holder","");
+        return new Movie(666, "Fake Movie", 6.6, "", "25-12-0000", " a fake movie place holder", "");
+    }
+
+    public static String getPocketMovies() {
+
+        String pocketMovieShareList = "";
+        String name;
+        for (int i = 0; i < pocketMovies.size(); i++) {
+            name = pocketMovies.get(i).getName();
+            pocketMovieShareList = pocketMovieShareList + ", " + name;
+        }
+        return pocketMovieShareList;
+
     }
 }
 
