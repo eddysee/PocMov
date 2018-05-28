@@ -109,6 +109,7 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
             Movie selectedMovie = MovieRecyclerAdapter.movies.get(clickedItemIndex);
             Intent detailIntent = new Intent(getContext(), DetailActivity.class);
             detailIntent.putExtra("movieObject", selectedMovie);
+            detailIntent.putExtra("requestInfo",false);
             startActivity(detailIntent);
         }
         else if (clickedItemIndex == movies.size()){

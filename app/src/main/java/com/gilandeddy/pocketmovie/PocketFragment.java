@@ -49,21 +49,17 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
         pocketRecyclerView.setAdapter(pocketRecyclerAdapter);
         pocketMovies.addAll(PocketedMoviesManager.getInstance().getAllMovies());
         pocketRecyclerAdapter.setMovies(pocketMovies);
-
-
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        ArrayList<Movie> freshPocket = new ArrayList<>();
+        ArrayList<Movie> freshPocket;
         freshPocket = PocketedMoviesManager.getInstance().getAllMovies();
         if (pocketMovies != null && pocketMovies.equals(freshPocket)) {
-
         } else {
             pocketRecyclerAdapter.setMovies(freshPocket);
-
         }
     }
 
@@ -72,50 +68,11 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
     public void onListItemClick(int clickedItemIndex) {
         Log.d("tag", "pocket fragment onclick clicked");
         Movie selectedMovie = PocketRecyclerAdapter.movies.get(clickedItemIndex);
-        HttpRequestService.startActionRequestHttp(getContext(), TMDBUrl.getDetailsURL(selectedMovie.getId()));
-        HttpReceiver httpReceiver = new HttpReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("httpRequestComplete");
-        getActivity().registerReceiver(httpReceiver, intentFilter);
+        Intent detailIntent = new Intent(getContext(), DetailActivity.class);
+        detailIntent.putExtra("movieObject", selectedMovie);
+        detailIntent.putExtra("requestInfo",true);
+        startActivity(detailIntent);
     }
-
-    private class HttpReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d("tag", "OnReceive called in pocket fragment");
-            String response = intent.getStringExtra("responseString");
-            Movie selectedMovie = parseMovieDetails(response);
-            Intent detailIntent = new Intent(getContext(), DetailActivity.class);
-            detailIntent.putExtra("movieObject", selectedMovie);
-            startActivity(detailIntent);
-        }
-
-    }
-
-    private Movie parseMovieDetails(String jsonString) {
-        Movie newMovie = new Movie();
-        if (jsonString != null) {
-            try {
-                JSONObject jsonMovie = new JSONObject(jsonString);
-                String name = jsonMovie.getString("title");
-                double rating = jsonMovie.getDouble("vote_average");
-                String posterImageUrl = jsonMovie.getString("poster_path");
-                String releaseDate = jsonMovie.getString("release_date");
-                String summary = jsonMovie.getString("overview");
-                String detailImageUrl = jsonMovie.getString("backdrop_path");
-                int id = jsonMovie.getInt("id");
-                newMovie = new Movie(id, name, rating, posterImageUrl, releaseDate, summary, detailImageUrl);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return newMovie;
-        }
-        Log.d("TAG", "jsonMovie empty, bullshit movie returned");
-        return new Movie(666, "Fake Movie", 6.6, "", "25-12-0000", " a fake movie place holder", "");
-    }
-
 
 }
 

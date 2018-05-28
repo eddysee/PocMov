@@ -38,6 +38,8 @@ public class DetailActivity extends AppCompatActivity {
     Movie selectedMovie;
     String youtubeID;
     boolean isInPocket;
+    boolean requestInfo;
+    HttpReceiver httpReceiver = new HttpReceiver();
 
 
 
@@ -45,35 +47,60 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        Intent intent = getIntent();
-        selectedMovie = (Movie) intent.getSerializableExtra("movieObject");
         detailImageView = findViewById(R.id.detailImageView);
         detailTitleView = findViewById(R.id.detailTitleView);
         summaryView = findViewById(R.id.summaryView);
         ratingView = findViewById(R.id.ratingDetailView);
         releaseDateView = findViewById(R.id.releaseDateView);
         checkBox = findViewById(R.id.pocketCheckBox);
-        isInPocket = PocketedMoviesManager.getInstance().isInPocketDatabase(selectedMovie.getId());
-        checkBox.setChecked(isInPocket);
-        detailTitleView.setText(selectedMovie.getName());
-        summaryView.setText(selectedMovie.getSummary());
-        ratingView.setText("Rating : " + selectedMovie.getRatingString());
-        releaseDateView.setText(selectedMovie.getReleaseDate());
-        Picasso.get().load(TMDBUrl.getImageUrlHead() + selectedMovie.getDetailImageUrl()).into(detailImageView);
-        Log.d("Tag", "Detail Activity Created");
-        // Leaked intent receiver error happens here often 1
+        Intent intent = getIntent();
+        // TODO Figure out the default value for get Boolean extra;
+        requestInfo = intent.getBooleanExtra("requestInfo",false);
+        if (requestInfo){
+            selectedMovie = (Movie) intent.getSerializableExtra("movieObject");
+            HttpRequestService.startMovieDetailRequest(this,TMDBUrl.getDetailsURL(selectedMovie.getId()));
+            IntentFilter moviedetailIntentFilter = new IntentFilter();
+            moviedetailIntentFilter.addAction("detailRequestComplete");
+            registerReceiver(httpReceiver,moviedetailIntentFilter);
 
+        }
+        else{
+            selectedMovie = (Movie) intent.getSerializableExtra("movieObject");
+            isInPocket = PocketedMoviesManager.getInstance().isInPocketDatabase(selectedMovie.getId());
+            checkBox.setChecked(isInPocket);
+            detailTitleView.setText(selectedMovie.getName());
+            summaryView.setText(selectedMovie.getSummary());
+            ratingView.setText("Rating : " + selectedMovie.getRatingString());
+            releaseDateView.setText(selectedMovie.getReleaseDate());
+        }
+
+        HttpRequestService.startTrailerPathRequest(this, TMDBUrl.getVideoUrl(selectedMovie.getId()));
+        Picasso.get().load(TMDBUrl.getImageUrlHead() + selectedMovie.getDetailImageUrl()).into(detailImageView);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("trailerRequestComplete");
+        registerReceiver(httpReceiver,intentFilter);
+        Log.d("Tag", "Detail Activity Created");
     }
 
     private class HttpReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            String intentAction = intent.getAction();
             String response = intent.getStringExtra("responseString");
-            youtubeID = parseTrailerYoutubeID(response);
-            Intent playTrailer = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + youtubeID));
-            startActivity(playTrailer);
-
+            if (intentAction.equalsIgnoreCase("trailerRequestComplete")){
+                youtubeID = parseTrailerYoutubeID(response);
+            }
+            else if (intentAction.equalsIgnoreCase("detailRequestComplete")){
+                parseMovieDetails(response);
+                isInPocket = PocketedMoviesManager.getInstance().isInPocketDatabase(selectedMovie.getId());
+                checkBox.setChecked(isInPocket);
+                detailTitleView.setText(selectedMovie.getName());
+                summaryView.setText(selectedMovie.getSummary());
+                ratingView.setText("Rating : " + selectedMovie.getRatingString());
+                releaseDateView.setText(selectedMovie.getReleaseDate());
+                Picasso.get().load(TMDBUrl.getImageUrlHead() + selectedMovie.getDetailImageUrl()).into(detailImageView);
+            }
         }
     }
 
@@ -100,6 +127,21 @@ public class DetailActivity extends AppCompatActivity {
         return youtubeID;
     }
 
+    private void parseMovieDetails(String jsonString){
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            selectedMovie.setSummary(jsonObject.getString("overview"));
+            selectedMovie.setReleaseDate(jsonObject.getString("release_date"));
+            selectedMovie.setDetailImageUrl(jsonObject.getString("backdrop_path"));
+        }
+        catch (JSONException e){
+            e.printStackTrace();
+        }
+
+
+
+    }
+
     public void onPocketClicked(View view) {
         Log.d("tag", "onpocketclicked");
         if (isInPocket){
@@ -116,25 +158,17 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void onVideoClicked(View view){
-        HttpRequestService.startActionRequestHttp(this, TMDBUrl.getVideoUrl(selectedMovie.getId()));
-        HttpReceiver httpReceiver = new HttpReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("httpRequestComplete");
-        registerReceiver(httpReceiver,intentFilter);
 
-
-
-
+        Intent playTrailer = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + youtubeID));
+        startActivity(playTrailer);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-
         getMenuInflater().inflate(R.menu.menu_main_tab, menu);
         MenuItem shareSelectedMovie = menu.findItem(R.id.action_share);
         shareActionProvider = MenuItemCompat.getActionProvider(shareSelectedMovie);
         shareSelectedMovie.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
             @Override
             public boolean onMenuItemClick(MenuItem shareSelectedMovie) {
                 String message = new String("Hey! Do you want to go see " + selectedMovie.getName() + " ?");

@@ -83,4 +83,16 @@ public class Movie implements Serializable{
     public void setYoutubeID(String youtubeID) {
         this.youtubeID = youtubeID;
     }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public void setDetailImageUrl(String detailImageUrl) {
+        this.detailImageUrl = detailImageUrl;
+    }
 }
