@@ -116,16 +116,6 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
         return new Movie(666, "Fake Movie", 6.6, "", "25-12-0000", " a fake movie place holder", "");
     }
 
-    public static String getPocketMovies() {
 
-        String pocketMovieShareList = "";
-        String name;
-        for (int i = 0; i < pocketMovies.size(); i++) {
-            name = pocketMovies.get(i).getName();
-            pocketMovieShareList = pocketMovieShareList + ", " + name;
-        }
-        return pocketMovieShareList;
-
-    }
 }
 

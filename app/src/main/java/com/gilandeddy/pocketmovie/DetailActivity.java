@@ -5,9 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.support.v4.view.ActionProvider;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -24,8 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class DetailActivity extends AppCompatActivity {
-
-
+    private ActionProvider shareActionProvider;
     ImageView detailImageView;
     TextView detailTitleView;
     TextView summaryView;
@@ -122,6 +125,29 @@ public class DetailActivity extends AppCompatActivity {
 
 
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+
+        getMenuInflater().inflate(R.menu.menu_main_tab, menu);
+        MenuItem shareSelectedMovie = menu.findItem(R.id.action_share);
+        shareActionProvider = MenuItemCompat.getActionProvider(shareSelectedMovie);
+        shareSelectedMovie.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem shareSelectedMovie) {
+                String message = new String("Hey! Do you want to go see " + selectedMovie.getName() + " ?");
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, message);
+                startActivity(shareIntent);
+                return true;
+            }
+        });
+
+
+        return true;
     }
 
 
