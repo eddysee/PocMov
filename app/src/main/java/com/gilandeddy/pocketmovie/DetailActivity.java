@@ -34,13 +34,13 @@ public class DetailActivity extends AppCompatActivity {
     TextView summaryView;
     TextView ratingView;
     TextView releaseDateView;
+    TextView genreView;
     CheckBox checkBox;
     Movie selectedMovie;
     String youtubeID;
     boolean isInPocket;
     boolean requestInfo;
     HttpReceiver httpReceiver = new HttpReceiver();
-
 
 
     @Override
@@ -52,33 +52,28 @@ public class DetailActivity extends AppCompatActivity {
         summaryView = findViewById(R.id.summaryView);
         ratingView = findViewById(R.id.ratingDetailView);
         releaseDateView = findViewById(R.id.releaseDateView);
+        genreView = findViewById(R.id.genreView);
         checkBox = findViewById(R.id.pocketCheckBox);
         Intent intent = getIntent();
-        // TODO Figure out the default value for get Boolean extra;
-        requestInfo = intent.getBooleanExtra("requestInfo",false);
-        if (requestInfo){
-            selectedMovie = (Movie) intent.getSerializableExtra("movieObject");
-            HttpRequestService.startMovieDetailRequest(this,TMDBUrl.getDetailsURL(selectedMovie.getId()));
-            IntentFilter moviedetailIntentFilter = new IntentFilter();
-            moviedetailIntentFilter.addAction("detailRequestComplete");
-            registerReceiver(httpReceiver,moviedetailIntentFilter);
+        selectedMovie = (Movie) intent.getSerializableExtra("movieObject");
 
-        }
-        else{
-            selectedMovie = (Movie) intent.getSerializableExtra("movieObject");
-            isInPocket = PocketedMoviesManager.getInstance().isInPocketDatabase(selectedMovie.getId());
-            checkBox.setChecked(isInPocket);
-            detailTitleView.setText(selectedMovie.getName());
-            summaryView.setText(selectedMovie.getSummary());
-            ratingView.setText("Rating : " + selectedMovie.getRatingString());
-            releaseDateView.setText(selectedMovie.getReleaseDate());
-        }
+        HttpRequestService.startMovieDetailRequest(this, TMDBUrl.getDetailsURL(selectedMovie.getId()));
+        IntentFilter moviedetailIntentFilter = new IntentFilter();
+        moviedetailIntentFilter.addAction("detailRequestComplete");
+        registerReceiver(httpReceiver, moviedetailIntentFilter);
+        isInPocket = PocketedMoviesManager.getInstance().isInPocketDatabase(selectedMovie.getId());
+        checkBox.setChecked(isInPocket);
+        detailTitleView.setText(selectedMovie.getName());
+        summaryView.setText(selectedMovie.getSummary());
+        ratingView.setText("Rating : " + selectedMovie.getRatingString());
+        releaseDateView.setText(selectedMovie.getReleaseDate());
+
 
         HttpRequestService.startTrailerPathRequest(this, TMDBUrl.getVideoUrl(selectedMovie.getId()));
         Picasso.get().load(TMDBUrl.getImageUrlHead() + selectedMovie.getDetailImageUrl()).into(detailImageView);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("trailerRequestComplete");
-        registerReceiver(httpReceiver,intentFilter);
+        registerReceiver(httpReceiver, intentFilter);
         Log.d("Tag", "Detail Activity Created");
     }
 
@@ -88,10 +83,9 @@ public class DetailActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String intentAction = intent.getAction();
             String response = intent.getStringExtra("responseString");
-            if (intentAction.equalsIgnoreCase("trailerRequestComplete")){
+            if (intentAction.equalsIgnoreCase("trailerRequestComplete")) {
                 youtubeID = parseTrailerYoutubeID(response);
-            }
-            else if (intentAction.equalsIgnoreCase("detailRequestComplete")){
+            } else if (intentAction.equalsIgnoreCase("detailRequestComplete")) {
                 parseMovieDetails(response);
                 isInPocket = PocketedMoviesManager.getInstance().isInPocketDatabase(selectedMovie.getId());
                 checkBox.setChecked(isInPocket);
@@ -99,6 +93,8 @@ public class DetailActivity extends AppCompatActivity {
                 summaryView.setText(selectedMovie.getSummary());
                 ratingView.setText("Rating : " + selectedMovie.getRatingString());
                 releaseDateView.setText(selectedMovie.getReleaseDate());
+                genreView.setText(parseGenres(response));
+
                 Picasso.get().load(TMDBUrl.getImageUrlHead() + selectedMovie.getDetailImageUrl()).into(detailImageView);
             }
         }
@@ -127,29 +123,43 @@ public class DetailActivity extends AppCompatActivity {
         return youtubeID;
     }
 
-    private void parseMovieDetails(String jsonString){
+    private String parseGenres(String jsonString){
+        String result = new String();
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray("genres");
+            for (int i = 0; i<2 ; i++){
+                JSONObject jsonGenre = jsonArray.getJSONObject(i);
+                result += jsonGenre.getString("name") + " ";
+            }
+        }
+        catch (JSONException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private void parseMovieDetails(String jsonString) {
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
             selectedMovie.setSummary(jsonObject.getString("overview"));
             selectedMovie.setReleaseDate(jsonObject.getString("release_date"));
             selectedMovie.setDetailImageUrl(jsonObject.getString("backdrop_path"));
-        }
-        catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
 
     }
 
     public void onPocketClicked(View view) {
         Log.d("tag", "onpocketclicked");
-        if (isInPocket){
+        if (isInPocket) {
             PocketedMoviesManager.getInstance().deleteMovieInPocket(selectedMovie.getId());
             isInPocket = false;
             checkBox.setChecked(isInPocket);
 
-        }else {
+        } else {
             PocketedMoviesManager.getInstance().addMovieToPocket(selectedMovie.getId(), 1, selectedMovie.getName(), selectedMovie.getRating(), selectedMovie.getPosterImageUrl());
             isInPocket = true;
             checkBox.setChecked(isInPocket);
@@ -157,7 +167,7 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-    public void onVideoClicked(View view){
+    public void onVideoClicked(View view) {
 
         Intent playTrailer = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + youtubeID));
         startActivity(playTrailer);
