@@ -33,6 +33,7 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
     private static ArrayList<Movie> movies = new ArrayList<>();
     public static MovieRecyclerAdapter movieRecyclerAdapter;
     private int pageNumber;
+    HttpReceiver httpReceiver = new HttpReceiver();
 
 
 
@@ -48,7 +49,6 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
 
         pageNumber = 1;
         HttpRequestService.startActionRequestHttp(getContext(), TMDBUrl.getPopularUrl(pageNumber));
-        HttpReceiver httpReceiver = new HttpReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("httpRequestComplete");
         getActivity().registerReceiver(httpReceiver, intentFilter);
@@ -119,4 +119,12 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
 
 
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(httpReceiver);
+    }
+
+
 }

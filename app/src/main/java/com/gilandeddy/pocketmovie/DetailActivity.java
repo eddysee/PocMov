@@ -184,5 +184,9 @@ public class DetailActivity extends AppCompatActivity {
         return true;
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(httpReceiver);
+    }
 }
