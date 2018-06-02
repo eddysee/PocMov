@@ -39,7 +39,6 @@ public class DetailActivity extends AppCompatActivity {
     Movie selectedMovie;
     String youtubeID;
     boolean isInPocket;
-    boolean requestInfo;
     HttpReceiver httpReceiver = new HttpReceiver();
 
 
