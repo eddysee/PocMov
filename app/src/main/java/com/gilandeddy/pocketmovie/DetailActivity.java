@@ -29,8 +29,8 @@ import org.json.JSONObject;
 
 public class DetailActivity extends AppCompatActivity {
     private ActionProvider shareActionProvider;
-    ImageView detailImageView;
-    TextView detailTitleView;
+    private ImageView detailImageView;
+    private TextView detailTitleView;
     TextView summaryView;
     TextView ratingView;
     TextView releaseDateView;
@@ -39,7 +39,7 @@ public class DetailActivity extends AppCompatActivity {
     Movie selectedMovie;
     String youtubeID;
     boolean isInPocket;
-    HttpReceiver httpReceiver = new HttpReceiver();
+    private HttpReceiver httpReceiver = new HttpReceiver();
 
 
     @Override
@@ -70,9 +70,7 @@ public class DetailActivity extends AppCompatActivity {
 
         HttpRequestService.startTrailerPathRequest(this, TMDBUrl.getVideoUrl(selectedMovie.getId()));
         Picasso.get().load(TMDBUrl.getImageUrlHead() + selectedMovie.getDetailImageUrl()).into(detailImageView);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("trailerRequestComplete");
-        registerReceiver(httpReceiver, intentFilter);
+
         Log.d("Tag", "Detail Activity Created");
     }
 
@@ -196,6 +194,20 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(httpReceiver);
+        try {
+            unregisterReceiver(httpReceiver);
+        }
+        catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("trailerRequestComplete");
+        registerReceiver(httpReceiver, intentFilter);
+
     }
 }
