@@ -94,6 +94,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 Picasso.get().load(TMDBUrl.getImageUrlHead() + selectedMovie.getDetailImageUrl()).into(detailImageView);
             }
+
         }
     }
 
