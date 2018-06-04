@@ -51,6 +51,8 @@ public class HttpRequestService extends IntentService {
 
 
         } catch (IOException e) {
+            Intent completeIntent = new Intent("failedHttpRequest");
+            sendBroadcast(completeIntent);
             e.printStackTrace();
         }
 

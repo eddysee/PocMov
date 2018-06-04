@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.gilandeddy.pocketmovie.model.HttpRequestService;
 import com.gilandeddy.pocketmovie.model.Movie;
@@ -33,9 +35,9 @@ import java.util.ArrayList;
 public class RecentFragment extends Fragment implements MovieRecyclerAdapter.ListItemClickListener {
     public static MovieRecyclerAdapter movieRecyclerAdapter;
     private int pageNumber = 1;
-    HttpReceiver httpReceiver = new HttpReceiver();
-
-
+    private HttpReceiver httpReceiver = new HttpReceiver();
+    private ProgressBar progressBar;
+    private TextView errorTextView;
 
     public RecentFragment() {
         // Required empty public constructor
@@ -47,36 +49,46 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recent, container, false);
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("httpRequestComplete");
-        getActivity().registerReceiver(httpReceiver, intentFilter);
-        PocketedMoviesManager.getInstance().initWithContext(getActivity().getApplicationContext()); // initiating db helper
-
+        PocketedMoviesManager.getInstance().initWithContext(getActivity().getApplicationContext());
+        // initiating db helper
+        progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
+        errorTextView = view.findViewById(R.id.errorTextView);
+        errorTextView.setVisibility(View.INVISIBLE);
         RecyclerView recentRecyclerView = view.findViewById(R.id.recentMovieRecycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recentRecyclerView.setLayoutManager(linearLayoutManager);
         movieRecyclerAdapter = new MovieRecyclerAdapter(this); // create the proper RV adapter
         recentRecyclerView.setAdapter(movieRecyclerAdapter);
-        if (RecentMovies.getInstance().getRecentMovies().size() <1) {
-            HttpRequestService.startActionRequestHttp(getContext(), TMDBUrl.getPopularUrl(pageNumber));
-            Log.d("HTTP", "HttpRequest launched");
-        }
-        else {
-            movieRecyclerAdapter.setMovies(RecentMovies.getInstance().getRecentMovies());
-        }
 
         return view;
 
     }
+
     private class HttpReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d("tag","OnReceive Called in RECENT fragment");
+            Log.d("tag", "OnReceive Called in RECENT fragment");
             String response = intent.getStringExtra("responseString");
-            RecentMovies.getInstance().addToRecentMovies(parsePopularMovies(response));
-            MovieRecyclerAdapter movieRecyclerAdapter = RecentFragment.movieRecyclerAdapter; //fetch the proper adapter from Fragment
-            movieRecyclerAdapter.setMovies(RecentMovies.getInstance().getRecentMovies());
+            if (intent.getAction().equalsIgnoreCase("httpRequestComplete")){
+                progressBar.setVisibility(View.INVISIBLE);
+                errorTextView.setVisibility(View.INVISIBLE);
+                RecentMovies.getInstance().addToRecentMovies(parsePopularMovies(response));
+                MovieRecyclerAdapter movieRecyclerAdapter = RecentFragment.movieRecyclerAdapter; //fetch the proper adapter from Fragment
+                movieRecyclerAdapter.setMovies(RecentMovies.getInstance().getRecentMovies());
+
+            }
+            else if (intent.getAction().equalsIgnoreCase("failedHttpRequest")){
+                progressBar.setVisibility(View.INVISIBLE);
+                errorTextView.setVisibility(View.VISIBLE);
+                errorTextView.setText(R.string.errorMessage);
+            }
+            else {
+                progressBar.setVisibility(View.INVISIBLE);
+                errorTextView.setVisibility(View.VISIBLE);
+                errorTextView.setText(R.string.unexpectedMessage);
+            }
         }
 
     }
@@ -100,6 +112,8 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
             }
 
         } catch (JSONException e) {
+            errorTextView.setVisibility(View.VISIBLE);
+            errorTextView.setText(R.string.unexpectedMessage);
             e.printStackTrace();
         }
         return movies;
@@ -113,10 +127,9 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
             Movie selectedMovie = MovieRecyclerAdapter.movies.get(clickedItemIndex);
             Intent detailIntent = new Intent(getContext(), DetailActivity.class);
             detailIntent.putExtra("movieObject", selectedMovie);
-            detailIntent.putExtra("requestInfo",false);
+            detailIntent.putExtra("requestInfo", false);
             startActivity(detailIntent);
-        }
-        else if (clickedItemIndex == RecentMovies.getInstance().getRecentMovies().size()){
+        } else if (clickedItemIndex == RecentMovies.getInstance().getRecentMovies().size()) {
             pageNumber++;
             HttpRequestService.startActionRequestHttp(getContext(), TMDBUrl.getPopularUrl(pageNumber));
         }
@@ -124,11 +137,36 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
 
     }
 
-    @Override
+   /* @Override
     public void onDestroy() {
         super.onDestroy();
         getActivity().unregisterReceiver(httpReceiver);
     }
+    */
 
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("httpRequestComplete");
+        intentFilter.addAction("failedHttpRequest");
+        getActivity().registerReceiver(httpReceiver, intentFilter);
+        if (RecentMovies.getInstance().getRecentMovies().size() < 1) {
+            HttpRequestService.startActionRequestHttp(getContext(), TMDBUrl.getPopularUrl(pageNumber));
+            Log.d("HTTP", "HttpRequest launched");
+            progressBar.setVisibility(View.VISIBLE);
+
+        } else {
+            movieRecyclerAdapter.setMovies(RecentMovies.getInstance().getRecentMovies());
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(httpReceiver);
+
+    }
 }

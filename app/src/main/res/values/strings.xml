@@ -10,7 +10,6 @@
     <string name="nextPage">Next Page</string>
     <string name="video">Video</string>
     <string name="pocket">Pocket</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="errorMessage">The http request failed, reopen to try again</string>
+    <string name="unexpectedMessage">Unexpected Response from the server, reopen to try again</string>
 </resources>
