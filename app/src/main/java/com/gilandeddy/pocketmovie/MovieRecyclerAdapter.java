@@ -49,8 +49,11 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
             Movie movie = movies.get(position);
             nextPageTextView.setVisibility(View.INVISIBLE);
             movieTitleView.setText(movie.getName());
-            ratingTitleView.setText("Rating : " + movie.getRatingString());
+            ratingTitleView.setText(position +  "Rating : " + movie.getRatingString());
             Picasso.get().load(TMDBUrl.getImageUrlHead() + movie.getPosterImageUrl()).into(posterImageView);
+            movieTitleView.setVisibility(View.VISIBLE);
+            ratingTitleView.setVisibility(View.VISIBLE);
+            posterImageView.setVisibility(View.VISIBLE);
         }
         else if (position == movies.size()){
             nextPageTextView.setVisibility(View.VISIBLE);
