@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.gilandeddy.pocketmovie.model.HttpRequestService;
 import com.gilandeddy.pocketmovie.model.Movie;
 import com.gilandeddy.pocketmovie.model.PocketedMoviesManager;
+import com.gilandeddy.pocketmovie.model.RecentMovies;
 import com.gilandeddy.pocketmovie.model.TMDBUrl;
 
 import org.json.JSONArray;
@@ -30,9 +31,8 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class RecentFragment extends Fragment implements MovieRecyclerAdapter.ListItemClickListener {
-    private static ArrayList<Movie> movies = new ArrayList<>();
     public static MovieRecyclerAdapter movieRecyclerAdapter;
-    private int pageNumber;
+    private int pageNumber = 1;
     HttpReceiver httpReceiver = new HttpReceiver();
 
 
@@ -47,19 +47,23 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recent, container, false);
 
-        pageNumber = 1;
-        HttpRequestService.startActionRequestHttp(getContext(), TMDBUrl.getPopularUrl(pageNumber));
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("httpRequestComplete");
         getActivity().registerReceiver(httpReceiver, intentFilter);
         PocketedMoviesManager.getInstance().initWithContext(getActivity().getApplicationContext()); // initiating db helper
-
 
         RecyclerView recentRecyclerView = view.findViewById(R.id.recentMovieRecycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recentRecyclerView.setLayoutManager(linearLayoutManager);
         movieRecyclerAdapter = new MovieRecyclerAdapter(this); // create the proper RV adapter
         recentRecyclerView.setAdapter(movieRecyclerAdapter);
+        if (RecentMovies.getInstance().getRecentMovies().size() <1) {
+            HttpRequestService.startActionRequestHttp(getContext(), TMDBUrl.getPopularUrl(pageNumber));
+            Log.d("HTTP", "HttpRequest launched");
+        }
+        else {
+            movieRecyclerAdapter.setMovies(RecentMovies.getInstance().getRecentMovies());
+        }
 
         return view;
 
@@ -70,9 +74,9 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
         public void onReceive(Context context, Intent intent) {
             Log.d("tag","OnReceive Called in RECENT fragment");
             String response = intent.getStringExtra("responseString");
-            movies.addAll(parsePopularMovies(response));
+            RecentMovies.getInstance().addToRecentMovies(parsePopularMovies(response));
             MovieRecyclerAdapter movieRecyclerAdapter = RecentFragment.movieRecyclerAdapter; //fetch the proper adapter from Fragment
-            movieRecyclerAdapter.setMovies(movies);
+            movieRecyclerAdapter.setMovies(RecentMovies.getInstance().getRecentMovies());
         }
 
     }
@@ -105,14 +109,14 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
     @Override
     public void onListItemClick(int clickedItemIndex) {
         Log.d("tag", "recent fragment onlistItemclick");
-        if (clickedItemIndex < movies.size()) {
+        if (clickedItemIndex < RecentMovies.getInstance().getRecentMovies().size()) {
             Movie selectedMovie = MovieRecyclerAdapter.movies.get(clickedItemIndex);
             Intent detailIntent = new Intent(getContext(), DetailActivity.class);
             detailIntent.putExtra("movieObject", selectedMovie);
             detailIntent.putExtra("requestInfo",false);
             startActivity(detailIntent);
         }
-        else if (clickedItemIndex == movies.size()){
+        else if (clickedItemIndex == RecentMovies.getInstance().getRecentMovies().size()){
             pageNumber++;
             HttpRequestService.startActionRequestHttp(getContext(), TMDBUrl.getPopularUrl(pageNumber));
         }

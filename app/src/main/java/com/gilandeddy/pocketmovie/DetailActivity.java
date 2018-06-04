@@ -31,14 +31,14 @@ public class DetailActivity extends AppCompatActivity {
     private ActionProvider shareActionProvider;
     private ImageView detailImageView;
     private TextView detailTitleView;
-    TextView summaryView;
-    TextView ratingView;
-    TextView releaseDateView;
-    TextView genreView;
-    CheckBox checkBox;
-    Movie selectedMovie;
-    String youtubeID;
-    boolean isInPocket;
+    private TextView summaryView;
+    private TextView ratingView;
+    private TextView releaseDateView;
+    private TextView genreView;
+    private CheckBox checkBox;
+    private Movie selectedMovie;
+    private String youtubeID;
+    private boolean isInPocket;
     private HttpReceiver httpReceiver = new HttpReceiver();
 
 
