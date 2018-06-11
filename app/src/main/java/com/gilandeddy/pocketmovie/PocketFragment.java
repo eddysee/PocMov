@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class PocketFragment extends Fragment implements PocketRecyclerAdapter.ListItemClickListener {
-    public static PocketRecyclerAdapter pocketRecyclerAdapter;
+    public PocketRecyclerAdapter pocketRecyclerAdapter;
     private static ArrayList<Movie> pocketMovies = new ArrayList<>();
 
 
@@ -70,7 +70,7 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
         Movie selectedMovie = PocketRecyclerAdapter.movies.get(clickedItemIndex);
         Intent detailIntent = new Intent(getContext(), DetailActivity.class);
         detailIntent.putExtra("movieObject", selectedMovie);
-        detailIntent.putExtra("requestInfo",true);
+        detailIntent.putExtra("requestInfo", true);
         startActivity(detailIntent);
     }
 

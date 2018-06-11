@@ -14,21 +14,22 @@ public class TMDBUrl {
         return imageUrlHead; // necessary ?
     }
 
-    public static String getPopularUrl (int pageNumber){
+    public static String getPopularUrl(int pageNumber) {
         String createdURL = baseURL + "popular?api_key=" + apiKey + "&page=" + pageNumber;
         return createdURL;
     }
-    public static String getVideoUrl (int id){
+
+    public static String getVideoUrl(int id) {
         String createdURL = baseURL + id + "/videos?api_key=" + apiKey;
         return createdURL;
     }
 
-    public static String getDetailsURL (int id) {
+    public static String getDetailsURL(int id) {
         String createdURL = baseURL + id + "?api_key=" + apiKey;
         return createdURL;
     }
 
-    public static String getSearchURL (int pageNumber, String query){
+    public static String getSearchURL(int pageNumber, String query) {
         String createdURL = searchURL + query + "&page=" + pageNumber + "&api_key=" + apiKey;
         return createdURL;
     }

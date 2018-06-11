@@ -33,7 +33,6 @@ import com.gilandeddy.pocketmovie.model.PocketedMoviesManager;
 public class MainActivity extends AppCompatActivity {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,16 +46,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.searchMenu);
         SearchView searchView = (SearchView) menuItem.getActionView();
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this,SearchActivity.class)));
         searchView.setQueryHint("search");
         return true;
     }
+    */
 }
 

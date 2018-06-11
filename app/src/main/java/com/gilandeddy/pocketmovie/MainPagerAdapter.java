@@ -12,19 +12,20 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class MainPagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
 
-    public MainPagerAdapter(Context context,FragmentManager fm) {
+    public MainPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
 
     @Override
     public Fragment getItem(int position) {
-        switch (position){
-            case 0 :
+        switch (position) {
+            case 0:
                 return new RecentFragment();
-            case 1 :
+            case 1:
                 return new PocketFragment();
-                default: return null;
+            default:
+                return null;
 
         }
 
@@ -37,12 +38,13 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        switch (position){
-            case 0 :
+        switch (position) {
+            case 0:
                 return "Recent Movies";
             case 1:
                 return "Pocket Movies";
-                default: return null;
+            default:
+                return null;
 
         }
     }

@@ -121,17 +121,16 @@ public class DetailActivity extends AppCompatActivity {
         return youtubeID;
     }
 
-    private String parseGenres(String jsonString){
+    private String parseGenres(String jsonString) {
         String result = new String();
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("genres");
-            for (int i = 0; i<2 ; i++){
+            for (int i = 0; i < 2; i++) {
                 JSONObject jsonGenre = jsonArray.getJSONObject(i);
                 result += jsonGenre.getString("name") + " ";
             }
-        }
-        catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return result;
@@ -197,8 +196,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onPause();
         try {
             unregisterReceiver(httpReceiver);
-        }
-        catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
     }

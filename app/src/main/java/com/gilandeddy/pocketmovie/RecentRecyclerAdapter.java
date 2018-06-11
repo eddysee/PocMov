@@ -21,20 +21,19 @@ import java.util.ArrayList;
 public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAdapter.MovieViewHolder> {
 
 
-    public static ArrayList<Movie> movies ;
+    public static ArrayList<Movie> movies;
 
-    final private ListItemClickListener listItemClickListener ;
+    final private ListItemClickListener listItemClickListener;
 
     public RecentRecyclerAdapter(ListItemClickListener listItemClickListener) {
         this.listItemClickListener = listItemClickListener;
     }
 
 
-
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View movieView = layoutInflater.inflate(R.layout.item_movie,parent,false);
+        View movieView = layoutInflater.inflate(R.layout.item_movie, parent, false);
         return new MovieViewHolder(movieView);
     }
 
@@ -45,7 +44,7 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
         TextView ratingTitleView = itemViewGroup.findViewById(R.id.movieRatingView);
         ImageView posterImageView = itemViewGroup.findViewById(R.id.posterImageView);
         TextView nextPageTextView = itemViewGroup.findViewById(R.id.nextPageTextView);
-        if(position < movies.size()) {
+        if (position < movies.size()) {
             Movie movie = movies.get(position);
             nextPageTextView.setVisibility(View.INVISIBLE);
             movieTitleView.setText(movie.getName());
@@ -54,8 +53,7 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
             movieTitleView.setVisibility(View.VISIBLE);
             ratingTitleView.setVisibility(View.VISIBLE);
             posterImageView.setVisibility(View.VISIBLE);
-        }
-        else if (position == movies.size()){
+        } else if (position == movies.size()) {
             nextPageTextView.setVisibility(View.VISIBLE);
             movieTitleView.setVisibility(View.INVISIBLE);
             ratingTitleView.setVisibility(View.INVISIBLE);
@@ -66,17 +64,17 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
 
     @Override
     public int getItemCount() {
-        if(movies != null){
-            int listSize = movies.size() + 1 ;
-            return  listSize;
+        if (movies != null) {
+            int listSize = movies.size() + 1;
+            return listSize;
         } else {
             return 0;
         }
 
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private MovieViewHolder(View itemView){
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private MovieViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
         }
@@ -85,7 +83,7 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
         public void onClick(View view) {
             int clickedPosition = this.getAdapterPosition();
             RecentRecyclerAdapter.this.listItemClickListener.onListItemClick(clickedPosition);
-            Log.d("tag","item clicked");
+            Log.d("tag", "item clicked");
         }
     }
 
@@ -94,7 +92,7 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
         this.notifyDataSetChanged();
     }
 
-    public interface ListItemClickListener{
+    public interface ListItemClickListener {
         void onListItemClick(int clickedItemIndex);
     }
 }

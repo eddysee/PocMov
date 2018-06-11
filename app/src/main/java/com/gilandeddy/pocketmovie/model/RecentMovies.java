@@ -17,11 +17,12 @@ public class RecentMovies {
     private RecentMovies() {
     }
 
-    public void addToRecentMovies (ArrayList<Movie> newMovies){
+    public void addToRecentMovies(ArrayList<Movie> newMovies) {
         movies.addAll(newMovies);
 
     }
-    public ArrayList<Movie> getRecentMovies(){
+
+    public ArrayList<Movie> getRecentMovies() {
         return movies;
     }
 

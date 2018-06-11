@@ -38,18 +38,15 @@ public class HttpRequestService extends IntentService {
                 Intent completeIntent = new Intent("httpRequestComplete");
                 completeIntent.putExtra("responseString", responseString);
                 sendBroadcast(completeIntent);
-            }
-            else if (filter.equalsIgnoreCase("detail")){
+            } else if (filter.equalsIgnoreCase("detail")) {
                 Intent completeIntent = new Intent("detailRequestComplete");
                 completeIntent.putExtra("responseString", responseString);
                 sendBroadcast(completeIntent);
-            }
-            else if (filter.equalsIgnoreCase("trailer")){
+            } else if (filter.equalsIgnoreCase("trailer")) {
                 Intent completeIntent = new Intent("trailerRequestComplete");
                 completeIntent.putExtra("responseString", responseString);
                 sendBroadcast(completeIntent);
-            }
-            else if (filter.equalsIgnoreCase("search")){
+            } else if (filter.equalsIgnoreCase("search")) {
                 Intent completeIntent = new Intent("searchRequestComplete");
                 completeIntent.putExtra("responseString", responseString);
                 sendBroadcast(completeIntent);
@@ -68,28 +65,31 @@ public class HttpRequestService extends IntentService {
 
     public static void startActionRequestHttp(Context context, String url) {
         Intent intent = new Intent(context, HttpRequestService.class);
-        intent.putExtra("filter","popular");
+        intent.putExtra("filter", "popular");
         intent.putExtra(EXTRA_URLSTRING, url);
         context.startService(intent);
 
     }
+
     public static void startMovieDetailRequest(Context context, String url) {
         Intent intent = new Intent(context, HttpRequestService.class);
-        intent.putExtra("filter","detail");
+        intent.putExtra("filter", "detail");
         intent.putExtra(EXTRA_URLSTRING, url);
         context.startService(intent);
 
     }
+
     public static void startTrailerPathRequest(Context context, String url) {
         Intent intent = new Intent(context, HttpRequestService.class);
-        intent.putExtra("filter","trailer");
+        intent.putExtra("filter", "trailer");
         intent.putExtra(EXTRA_URLSTRING, url);
         context.startService(intent);
 
     }
-    public static void startSearchRequest(Context context, String url){
+
+    public static void startSearchRequest(Context context, String url) {
         Intent intent = new Intent(context, HttpRequestService.class);
-        intent.putExtra("filter","search");
+        intent.putExtra("filter", "search");
         intent.putExtra(EXTRA_URLSTRING, url);
         context.startService(intent);
     }

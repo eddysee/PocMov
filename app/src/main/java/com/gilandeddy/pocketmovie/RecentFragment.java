@@ -33,7 +33,7 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class RecentFragment extends Fragment implements RecentRecyclerAdapter.ListItemClickListener {
-    public static RecentRecyclerAdapter recentRecyclerAdapter;
+    public  RecentRecyclerAdapter recentRecyclerAdapter;
     private int pageNumber = 1;
     private HttpReceiver httpReceiver = new HttpReceiver();
     private ProgressBar progressBar;
@@ -71,20 +71,18 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
         public void onReceive(Context context, Intent intent) {
             Log.d("tag", "OnReceive Called in RECENT fragment");
             String response = intent.getStringExtra("responseString");
-            if (intent.getAction().equalsIgnoreCase("httpRequestComplete")){
+            if (intent.getAction().equalsIgnoreCase("httpRequestComplete")) {
                 progressBar.setVisibility(View.INVISIBLE);
                 errorTextView.setVisibility(View.INVISIBLE);
                 RecentMovies.getInstance().addToRecentMovies(parsePopularMovies(response));
-                RecentRecyclerAdapter recentRecyclerAdapter = RecentFragment.recentRecyclerAdapter; //fetch the proper adapter from Fragment
+                RecentRecyclerAdapter recentRecyclerAdapter = RecentFragment.this.recentRecyclerAdapter; //fetch the proper adapter from Fragment
                 recentRecyclerAdapter.setMovies(RecentMovies.getInstance().getRecentMovies());
 
-            }
-            else if (intent.getAction().equalsIgnoreCase("failedHttpRequest")){
+            } else if (intent.getAction().equalsIgnoreCase("failedHttpRequest")) {
                 progressBar.setVisibility(View.INVISIBLE);
                 errorTextView.setVisibility(View.VISIBLE);
                 errorTextView.setText(R.string.errorMessage);
-            }
-            else {
+            } else {
                 progressBar.setVisibility(View.INVISIBLE);
                 errorTextView.setVisibility(View.VISIBLE);
                 errorTextView.setText(R.string.unexpectedMessage);
@@ -136,15 +134,6 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
 
 
     }
-
-   /* @Override
-    public void onDestroy() {
-        super.onDestroy();
-        getActivity().unregisterReceiver(httpReceiver);
-    }
-    */
-
-
 
     @Override
     public void onStart() {

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.gilandeddy.pocketmovie.model.Movie;
 import com.gilandeddy.pocketmovie.model.TMDBUrl;
 import com.squareup.picasso.Picasso;

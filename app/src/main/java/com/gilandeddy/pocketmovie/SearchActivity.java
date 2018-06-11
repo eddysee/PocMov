@@ -37,7 +37,7 @@ public class SearchActivity extends AppCompatActivity implements RecentRecyclerA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("tag","SearchActivity created");
+        Log.d("tag", "SearchActivity created");
         setContentView(R.layout.activity_search);
         searchProgressBar = findViewById(R.id.progressBar);
         searchErrorTextView = findViewById(R.id.errorTextView);
@@ -142,14 +142,14 @@ public class SearchActivity extends AppCompatActivity implements RecentRecyclerA
 
     @Override
     protected void onNewIntent(Intent intent) {
-            setIntent(intent);
+        setIntent(intent);
         handleIntent(intent);
     }
 
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            HttpRequestService.startSearchRequest(this,TMDBUrl.getSearchURL(pageNumber, query));
+            HttpRequestService.startSearchRequest(this, TMDBUrl.getSearchURL(pageNumber, query));
         }
     }
 }

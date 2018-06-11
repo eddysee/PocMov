@@ -17,11 +17,12 @@ public class SearchedMovies {
     private SearchedMovies() {
     }
 
-    public void addToSearchedMovies(ArrayList<Movie> newMovies){
+    public void addToSearchedMovies(ArrayList<Movie> newMovies) {
         movies.addAll(newMovies);
 
     }
-    public ArrayList<Movie> getSearchedMovies(){
+
+    public ArrayList<Movie> getSearchedMovies() {
         return movies;
     }
 }
