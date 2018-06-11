@@ -32,8 +32,8 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecentFragment extends Fragment implements MovieRecyclerAdapter.ListItemClickListener {
-    public static MovieRecyclerAdapter movieRecyclerAdapter;
+public class RecentFragment extends Fragment implements RecentRecyclerAdapter.ListItemClickListener {
+    public static RecentRecyclerAdapter recentRecyclerAdapter;
     private int pageNumber = 1;
     private HttpReceiver httpReceiver = new HttpReceiver();
     private ProgressBar progressBar;
@@ -58,8 +58,8 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
         RecyclerView recentRecyclerView = view.findViewById(R.id.recentMovieRecycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recentRecyclerView.setLayoutManager(linearLayoutManager);
-        movieRecyclerAdapter = new MovieRecyclerAdapter(this); // create the proper RV adapter
-        recentRecyclerView.setAdapter(movieRecyclerAdapter);
+        recentRecyclerAdapter = new RecentRecyclerAdapter(this); // create the proper RV adapter
+        recentRecyclerView.setAdapter(recentRecyclerAdapter);
 
         return view;
 
@@ -75,8 +75,8 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
                 progressBar.setVisibility(View.INVISIBLE);
                 errorTextView.setVisibility(View.INVISIBLE);
                 RecentMovies.getInstance().addToRecentMovies(parsePopularMovies(response));
-                MovieRecyclerAdapter movieRecyclerAdapter = RecentFragment.movieRecyclerAdapter; //fetch the proper adapter from Fragment
-                movieRecyclerAdapter.setMovies(RecentMovies.getInstance().getRecentMovies());
+                RecentRecyclerAdapter recentRecyclerAdapter = RecentFragment.recentRecyclerAdapter; //fetch the proper adapter from Fragment
+                recentRecyclerAdapter.setMovies(RecentMovies.getInstance().getRecentMovies());
 
             }
             else if (intent.getAction().equalsIgnoreCase("failedHttpRequest")){
@@ -124,7 +124,7 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
     public void onListItemClick(int clickedItemIndex) {
         Log.d("tag", "recent fragment onlistItemclick");
         if (clickedItemIndex < RecentMovies.getInstance().getRecentMovies().size()) {
-            Movie selectedMovie = MovieRecyclerAdapter.movies.get(clickedItemIndex);
+            Movie selectedMovie = RecentRecyclerAdapter.movies.get(clickedItemIndex);
             Intent detailIntent = new Intent(getContext(), DetailActivity.class);
             detailIntent.putExtra("movieObject", selectedMovie);
             detailIntent.putExtra("requestInfo", false);
@@ -159,7 +159,7 @@ public class RecentFragment extends Fragment implements MovieRecyclerAdapter.Lis
             progressBar.setVisibility(View.VISIBLE);
 
         } else {
-            movieRecyclerAdapter.setMovies(RecentMovies.getInstance().getRecentMovies());
+            recentRecyclerAdapter.setMovies(RecentMovies.getInstance().getRecentMovies());
         }
     }
 

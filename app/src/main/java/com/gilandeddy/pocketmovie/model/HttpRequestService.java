@@ -1,6 +1,7 @@
 package com.gilandeddy.pocketmovie.model;
 
 import android.app.IntentService;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 
@@ -48,6 +49,11 @@ public class HttpRequestService extends IntentService {
                 completeIntent.putExtra("responseString", responseString);
                 sendBroadcast(completeIntent);
             }
+            else if (filter.equalsIgnoreCase("search")){
+                Intent completeIntent = new Intent("searchRequestComplete");
+                completeIntent.putExtra("responseString", responseString);
+                sendBroadcast(completeIntent);
+            }
 
 
         } catch (IOException e) {
@@ -80,5 +86,11 @@ public class HttpRequestService extends IntentService {
         intent.putExtra(EXTRA_URLSTRING, url);
         context.startService(intent);
 
+    }
+    public static void startSearchRequest(Context context, String url){
+        Intent intent = new Intent(context, HttpRequestService.class);
+        intent.putExtra("filter","search");
+        intent.putExtra(EXTRA_URLSTRING, url);
+        context.startService(intent);
     }
 }

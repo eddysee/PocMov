@@ -173,7 +173,7 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main_tab, menu);
+        getMenuInflater().inflate(R.menu.detail_menu, menu);
         MenuItem shareSelectedMovie = menu.findItem(R.id.action_share);
         shareActionProvider = MenuItemCompat.getActionProvider(shareSelectedMovie);
         shareSelectedMovie.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

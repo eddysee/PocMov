@@ -18,14 +18,14 @@ import java.util.ArrayList;
  * Created by gilbert on 5/12/18.
  */
 
-public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdapter.MovieViewHolder> {
+public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAdapter.MovieViewHolder> {
 
 
     public static ArrayList<Movie> movies ;
 
     final private ListItemClickListener listItemClickListener ;
 
-    public MovieRecyclerAdapter(ListItemClickListener listItemClickListener) {
+    public RecentRecyclerAdapter(ListItemClickListener listItemClickListener) {
         this.listItemClickListener = listItemClickListener;
     }
 
@@ -84,7 +84,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
         @Override
         public void onClick(View view) {
             int clickedPosition = this.getAdapterPosition();
-            MovieRecyclerAdapter.this.listItemClickListener.onListItemClick(clickedPosition);
+            RecentRecyclerAdapter.this.listItemClickListener.onListItemClick(clickedPosition);
             Log.d("tag","item clicked");
         }
     }
