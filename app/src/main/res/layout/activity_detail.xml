@@ -13,6 +13,7 @@
         android:id="@+id/detailImageView"
         android:layout_width="0dp"
         android:layout_height="200dp"
+        android:background="@drawable/cinema"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/detailTitleView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +45,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="23 23 2323"
+        android:text="01 01 2018"
         android:textColor="@color/colorText"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,10 +59,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:textColor="@color/colorText"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Rating : 7.7"
+        android:text="Rating : 6.0"
+        android:textColor="@color/colorText"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -75,6 +76,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="Movie Genre"
+
+        android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/ratingDetailView"
         app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toEndOf="@+id/releaseDateView"
@@ -101,6 +105,7 @@
             android:layout_marginBottom="8dp"
             android:textColor="@color/colorText"
             android:textSize="12sp"
+
             app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteX="0dp" />
     </ScrollView>

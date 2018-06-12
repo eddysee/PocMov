@@ -15,20 +15,33 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 /**
- * Created by gilbert on 5/12/18.
+ * @author Gilbert & Eddy
+ * This class PockerRecyclerAdapter extends RecyclerViewAdapter
  */
 
 public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAdapter.MovieViewHolder> {
 
-
+    /**
+     *
+     */
     public static ArrayList<Movie> movies;
 
     final private ListItemClickListener listItemClickListener;
 
+    /** Constructor for list item clicked in the recent popular recycler
+     *
+     * @param listItemClickListener
+     */
     public RecentRecyclerAdapter(ListItemClickListener listItemClickListener) {
         this.listItemClickListener = listItemClickListener;
     }
 
+    /** This method inflates the recycler with the item movie
+     *
+     * @param parent
+     * @param viewType
+     * @return movie view holder
+     */
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,6 +50,12 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
         return new MovieViewHolder(movieView);
     }
 
+    /** This method internally calls onBindViewHolder(ViewHolder, int) to update the RecyclerView.
+     *  ViewHolder contents with the item at the given position and also sets up private fields to be used by RecyclerView.
+     *
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         ViewGroup itemViewGroup = (ViewGroup) holder.itemView;
@@ -62,6 +81,10 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
 
     }
 
+    /** This method returns the total number of items in the data set held by the adapter.
+     *
+     * @return list size or 0
+     */
     @Override
     public int getItemCount() {
         if (movies != null) {
@@ -73,12 +96,20 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
 
     }
 
+    /** This sub-class MovieViewHolder describes an item view and metadata about its place within the RecyclerView.
+     * RecyclerView.Adapter implementations subclass ViewHolder
+     *
+     */
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private MovieViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
         }
 
+        /**
+         *
+         * @param view
+         */
         @Override
         public void onClick(View view) {
             int clickedPosition = this.getAdapterPosition();
@@ -87,12 +118,22 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
         }
     }
 
+    /** This methods shows the view when onClick
+     *  XXXX
+     *
+     * @param movies
+     */
     public void setMovies(ArrayList<Movie> movies) {
         this.movies = movies;
         this.notifyDataSetChanged();
     }
 
+    /** XXXX
+     *
+     */
     public interface ListItemClickListener {
         void onListItemClick(int clickedItemIndex);
     }
+
+
 }

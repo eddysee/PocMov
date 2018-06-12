@@ -27,6 +27,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * @author Gilbert & Eddy
+ * This class DetailActivity is an Activity class which handles the detailed view of a selected
+ * movie from the recent popular movie fragment or the pocket movie fragment
+ * The same activity can be used to view the details of a movie name search query
+ * Base launcher for DetailActivity
+ */
 public class DetailActivity extends AppCompatActivity {
     private ActionProvider shareActionProvider;
     private ImageView detailImageView;
@@ -41,7 +48,20 @@ public class DetailActivity extends AppCompatActivity {
     private boolean isInPocket;
     private HttpReceiver httpReceiver = new HttpReceiver();
 
-
+    /** OnCreate method creates the detail activity layout
+     *  This layout incluses:
+     * - Image View for Movie Details Image
+     * - TextView for Movie Title
+     * - TextvView for Movie Summary
+     * - TextView for Movie Release Date
+     * - TextView for Movie Genre
+     * - Checkbox for Movie Pocket Status
+     * The method also includes intent of selected movie needed for the selected movie to display
+     *
+     * The method also fills the imageviews and textviews and pocket checkbox status
+     * The method also calls the HttpRequestService for the Youtube trailer URL of the selected movie.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +94,15 @@ public class DetailActivity extends AppCompatActivity {
         Log.d("Tag", "Detail Activity Created");
     }
 
+    /** This class HttpReciever which extends BreadcastReciever allows to register for system events
+     *
+     */
     private class HttpReceiver extends BroadcastReceiver {
-
+        /**
+         *
+         * @param context
+         * @param intent
+         */
         @Override
         public void onReceive(Context context, Intent intent) {
             String intentAction = intent.getAction();
@@ -98,7 +125,11 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-
+    /** This method parses the jsonString of the Youtube tailer of the movie to a String value.
+     *
+     * @param jsonString
+     * @return Youtube URL string
+     */
     private String parseTrailerYoutubeID(String jsonString) {
         boolean lookingforTrailer = true;
         String youtubeID = new String();
@@ -121,6 +152,13 @@ public class DetailActivity extends AppCompatActivity {
         return youtubeID;
     }
 
+    /** This method parses the jsonString of the genre of the movie to String value
+     * Since movies can belong to more then one genre this method also selects only the first
+     * two genres of the jsonString due to limited TextView area in the details activity layout.
+     *
+     * @param jsonString
+     * @return movie genre String
+     */
     private String parseGenres(String jsonString) {
         String result = new String();
         try {
@@ -136,6 +174,10 @@ public class DetailActivity extends AppCompatActivity {
         return result;
     }
 
+    /** This method parses the jsonString summary of the movie to a String value
+     *
+     * @param jsonString
+     */
     private void parseMovieDetails(String jsonString) {
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -149,6 +191,11 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    /** This method handles the view of the pocket check box
+     * Checkbox with a tick implies the movie is in the Pocket movie database
+     *
+     * @param view
+     */
     public void onPocketClicked(View view) {
         Log.d("tag", "onpocketclicked");
         if (isInPocket) {
@@ -164,12 +211,26 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    /** This method takes the user to the selected movie Youtube trailer.
+     * If the user has a Youtube application the methods results in the user having an option to
+     * either watch the trailer in the Youtube application or via a local browser.
+     *
+     * @param view
+     */
     public void onVideoClicked(View view) {
 
         Intent playTrailer = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + youtubeID));
         startActivity(playTrailer);
     }
 
+    /** This method inflates a menu in the detail activity that
+     *  lets the user to send the selected movie title via any of the messaging services
+     *  with a short invitational message to watch the selected movie along the movie name.
+     *
+     *
+     * @param menu
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail_menu, menu);
@@ -191,6 +252,9 @@ public class DetailActivity extends AppCompatActivity {
         return true;
     }
 
+    /** This method unregisters the http receiver when the app is paused
+     *
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -201,6 +265,9 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    /** This method re-registers the http receiver whent the app is resumed
+     *
+     */
     @Override
     protected void onResume() {
         super.onResume();

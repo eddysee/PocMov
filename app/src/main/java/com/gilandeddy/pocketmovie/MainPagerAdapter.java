@@ -6,17 +6,29 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 /**
- * Created by gilbert on 5/12/18.
+ * @author Gilbert & Eddy
+ * This class MainPagerAdapter
+ *
  */
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
 
+    /**
+     *
+     * @param context
+     * @param fm
+     */
     public MainPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
 
+    /**
+     *
+     * @param position
+     * @return
+     */
     @Override
     public Fragment getItem(int position) {
         switch (position) {
@@ -31,11 +43,20 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int getCount() {
         return 2;
     }
 
+    /**
+     *
+     * @param position
+     * @return
+     */
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {

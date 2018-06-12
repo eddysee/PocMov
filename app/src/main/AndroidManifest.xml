@@ -7,7 +7,7 @@
     <application
         android:allowBackup="true"
         android:background="@color/colorMain"
-        android:icon="@drawable/cameraicon2"
+        android:icon="@drawable/cameraicon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"

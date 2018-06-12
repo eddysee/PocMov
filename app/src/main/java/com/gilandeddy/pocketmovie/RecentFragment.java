@@ -30,6 +30,9 @@ import java.util.ArrayList;
 
 
 /**
+ * @author Gilbert & Eddy
+ * This class RecentFragment extends Fragment and implements a recycler adapter
+ * This class diplays the populat movies by inflating a recycler view and adding the movies
  * A simple {@link Fragment} subclass.
  */
 public class RecentFragment extends Fragment implements RecentRecyclerAdapter.ListItemClickListener {
@@ -39,11 +42,22 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
     private ProgressBar progressBar;
     private TextView errorTextView;
 
+    /**
+     * Required empty public constructor
+     */
     public RecentFragment() {
-        // Required empty public constructor
+
     }
 
-
+    /** The onCreateView methods inflates the recent popular movie fragment layout.
+     * The LinearLayoutManager is initialised
+     * The recycler adapter is loaded and the view is launched
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,8 +79,15 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
 
     }
 
+    /** This class HttpReciever which extends BreadcastReciever allows to register for system events
+     *
+     */
     private class HttpReceiver extends BroadcastReceiver {
-
+        /**
+         *
+         * @param context
+         * @param intent
+         */
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("tag", "OnReceive Called in RECENT fragment");
@@ -91,6 +112,11 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
 
     }
 
+    /** This method parses the jsonString of the popular movie object arraylist to a String value.
+     *
+     * @param jsonString
+     * @return movie object arraylist
+     */
     private ArrayList<Movie> parsePopularMovies(String jsonString) {
         ArrayList<Movie> movies = new ArrayList<>();
         try {
@@ -117,7 +143,11 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
         return movies;
     }
 
-
+    /** This method is launched when an item in the list of the recycler is clicked
+     * This method initiates the detail activity
+     *
+     * @param clickedItemIndex
+     */
     @Override
     public void onListItemClick(int clickedItemIndex) {
         Log.d("tag", "recent fragment onlistItemclick");
@@ -135,6 +165,9 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
 
     }
 
+    /** The method is launched on Start
+     *
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -152,10 +185,14 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void onStop() {
         super.onStop();
         getActivity().unregisterReceiver(httpReceiver);
 
     }
+
 }

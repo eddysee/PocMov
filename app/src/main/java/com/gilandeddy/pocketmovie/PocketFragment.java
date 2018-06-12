@@ -25,18 +25,34 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-/**
- * A simple {@link Fragment} subclass.
+/** @author Gilbert & Eddy
+ *  This class PocketFragment extends Fragment and implements a recycler adapter
+ *  This class diplays the pocketed movies by inflating a recycler view and adding movies
+ *  A simple {@link Fragment} subclass.
+ *
  */
+
 public class PocketFragment extends Fragment implements PocketRecyclerAdapter.ListItemClickListener {
     public PocketRecyclerAdapter pocketRecyclerAdapter;
     private static ArrayList<Movie> pocketMovies = new ArrayList<>();
 
+    /**
+     * Required empty public constructor
+     */
 
     public PocketFragment() {
-        // Required empty public constructor
+
     }
 
+    /** The onCreateView methods inflates the pocket fragment layout.
+     * The LinearLayoutManager is initialised
+     * The recycler adapter is loaded and the view is launched
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return pocked fragment view with recycler
+     */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,10 +64,14 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
         pocketRecyclerAdapter = new PocketRecyclerAdapter(this);
         pocketRecyclerView.setAdapter(pocketRecyclerAdapter);
         pocketMovies.addAll(PocketedMoviesManager.getInstance().getAllMovies());
-        pocketRecyclerAdapter.setMovies(pocketMovies);
+        pocketRecyclerAdapter.setMovies(pocketMovies); // Initialize dataset
         return view;
     }
 
+    /** The method is launched on Start
+     * XXX
+     *
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -63,7 +83,11 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
         }
     }
 
-
+    /** This method is launched when an item in the list of the recycler is clicked
+     * This method initiates the detail activity
+     *
+     * @param clickedItemIndex
+     */
     @Override
     public void onListItemClick(int clickedItemIndex) {
         Log.d("tag", "pocket fragment onclick clicked");

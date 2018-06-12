@@ -26,6 +26,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * @author Gilbert & Eddy
+ * This class SearchActivity extends AppCompatActivity implements a RecyclerAdapter
+ *
+ */
+
 public class SearchActivity extends AppCompatActivity implements RecentRecyclerAdapter.ListItemClickListener {
     public static RecentRecyclerAdapter searchRecyclerAdapter;
     private int pageNumber = 1;
@@ -33,7 +39,12 @@ public class SearchActivity extends AppCompatActivity implements RecentRecyclerA
     private ProgressBar searchProgressBar;
     private TextView searchErrorTextView;
 
-
+    /** OnCreate the activity loads the search activity layout
+     * This layout incluses:
+     *
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +64,10 @@ public class SearchActivity extends AppCompatActivity implements RecentRecyclerA
 
     }
 
+    /**
+     *
+     * @param clickedItemIndex
+     */
     @Override
     public void onListItemClick(int clickedItemIndex) {
 
@@ -71,8 +86,15 @@ public class SearchActivity extends AppCompatActivity implements RecentRecyclerA
 
     }
 
+    /**
+     *
+     */
     private class HttpReceiver extends BroadcastReceiver {
-
+        /**
+         *
+         * @param context
+         * @param intent
+         */
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("tag", "OnReceive Called in RECENT fragment");
@@ -98,6 +120,11 @@ public class SearchActivity extends AppCompatActivity implements RecentRecyclerA
 
     }
 
+    /** This activity parses the jsonString of the search activity to movie object arraylist
+     *
+     * @param jsonString
+     * @return movie object arraylist
+     */
     private ArrayList<Movie> parseSearchedMovies(String jsonString) {
         ArrayList<Movie> movies = new ArrayList<>();
         try {
@@ -124,6 +151,9 @@ public class SearchActivity extends AppCompatActivity implements RecentRecyclerA
         return movies;
     }
 
+    /**
+     *
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -140,12 +170,22 @@ public class SearchActivity extends AppCompatActivity implements RecentRecyclerA
         }
     }
 
+    /** The code to handle the search intent is now in the handleIntent() method,
+     * so that both onCreate() and onNewIntent() can execute it.
+     *
+     * @param intent
+     */
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         handleIntent(intent);
     }
 
+    /** This method handles the search.
+     *  Launches the Http request service with the String query from the search bar in the main menu
+     *
+     * @param intent
+     */
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);

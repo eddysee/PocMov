@@ -12,17 +12,31 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by gilbert on 5/12/18.
+ * @author Gilbert & Eddy
+ * This class HttpRequestService handles the Http Requests that are made in different activities
+ * in the app. It handels the Http Requests from 'The Movie Data Base' TMDB:
+ * Http Requests fort
+ * - Popular Movies
+ * - Details
+ * - Trailer
+ * - Movie Search
  */
 
 public class HttpRequestService extends IntentService {
     static String EXTRA_URLSTRING = "com.gilandeddy.123456";
 
+    /**
+     *
+     */
     public HttpRequestService() {
         super("HttpRequestService");
     }
 
 
+    /**
+     *
+     * @param intent
+     */
     @Override
     protected void onHandleIntent(Intent intent) {
         final String url = intent.getStringExtra(EXTRA_URLSTRING);
@@ -31,6 +45,9 @@ public class HttpRequestService extends IntentService {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
+        /**
+         *
+         */
         try {
             Response response = client.newCall(request).execute();
             String responseString = new String(response.body().string());
@@ -62,7 +79,11 @@ public class HttpRequestService extends IntentService {
 
     }
 
-
+    /**
+     *
+     * @param context
+     * @param url
+     */
     public static void startActionRequestHttp(Context context, String url) {
         Intent intent = new Intent(context, HttpRequestService.class);
         intent.putExtra("filter", "popular");
@@ -70,6 +91,12 @@ public class HttpRequestService extends IntentService {
         context.startService(intent);
 
     }
+
+    /**
+     *
+     * @param context
+     * @param url
+     */
 
     public static void startMovieDetailRequest(Context context, String url) {
         Intent intent = new Intent(context, HttpRequestService.class);
@@ -79,6 +106,12 @@ public class HttpRequestService extends IntentService {
 
     }
 
+    /**
+     *
+     * @param context
+     * @param url
+     */
+
     public static void startTrailerPathRequest(Context context, String url) {
         Intent intent = new Intent(context, HttpRequestService.class);
         intent.putExtra("filter", "trailer");
@@ -86,6 +119,12 @@ public class HttpRequestService extends IntentService {
         context.startService(intent);
 
     }
+
+    /**
+     *
+     * @param context
+     * @param url
+     */
 
     public static void startSearchRequest(Context context, String url) {
         Intent intent = new Intent(context, HttpRequestService.class);

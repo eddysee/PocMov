@@ -32,7 +32,12 @@ import com.gilandeddy.pocketmovie.model.PocketedMoviesManager;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    /** The MainActivity class of the application includes two sliding tabs
+     *  An adapter for the fragment manager.
+     *  Base launcher for  MainActivity
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /** This method inflates a menu in the MainActitivity which includes an app widget which
+     *  launches the search activity when a query is entered.
+     *
+     * @param menu
+     * @return true for menu
+     */
     /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
