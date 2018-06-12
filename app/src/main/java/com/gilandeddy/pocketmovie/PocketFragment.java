@@ -63,13 +63,16 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
         pocketRecyclerView.setLayoutManager(linearLayoutManager);
         pocketRecyclerAdapter = new PocketRecyclerAdapter(this);
         pocketRecyclerView.setAdapter(pocketRecyclerAdapter);
+        // fetch all the movies from the SQLite DB :
         pocketMovies.addAll(PocketedMoviesManager.getInstance().getAllMovies());
-        pocketRecyclerAdapter.setMovies(pocketMovies); // Initialize dataset
+        // load the movies in the recyclerAdapter :
+        pocketRecyclerAdapter.setMovies(pocketMovies);
         return view;
     }
 
-    /** The method is launched on Start
-     * XXX
+    /** This Override of onStart checks if the existing movie object array list pocketMovies matches the SQLite DB
+     * if not, it replaces the existing array by the new one from SQLite
+     *
      *
      */
     @Override
@@ -84,7 +87,7 @@ public class PocketFragment extends Fragment implements PocketRecyclerAdapter.Li
     }
 
     /** This method is launched when an item in the list of the recycler is clicked
-     * This method initiates the detail activity
+     * This method launches an intent to the detail activity
      *
      * @param clickedItemIndex
      */

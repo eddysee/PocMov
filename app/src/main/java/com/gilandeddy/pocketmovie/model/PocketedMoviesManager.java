@@ -48,7 +48,7 @@ public class PocketedMoviesManager {
         }
     }
 
-    /** The method adds movie to the Pocket database with the following parameters
+    /** This method adds movie to the Pocket database with the following parameters
      *
      * @param id
      * @param inPocket
@@ -60,14 +60,15 @@ public class PocketedMoviesManager {
         pocketDatabaseHelper.insertMovie(id, inPocket, title, rating, posterPath);
     }
 
-    /** This method updates the movies in the Pocket
+    /* This method updates the movies in the Pocket
      *
      * @param id
      * @param inPocket
-     */
+
     public void updateMovieInPocket(int id, int inPocket) {
         pocketDatabaseHelper.updateMovie(id, inPocket);
     }
+     */
 
     /** This method deletes the movies from the Pocket database with movie id
      *
@@ -77,33 +78,35 @@ public class PocketedMoviesManager {
         pocketDatabaseHelper.deleteMovie(id);
     }
 
-    /** This method gives boolean value for movie in Pocket Database
+    /** This method returns true if the movie is in the SQL Database and the value of inPocket is 1
      *
      * @param id
-     * @return ture or false
+     * @return boolean
      */
-    //Should return true if the Movie id exists and inpocket is 1
     public boolean isInPocketDatabase(int id) {
         String idString = Integer.toString(id);
         Cursor cursor = pocketDatabaseHelper.getReadableDatabase().query("POCKET", new String[]{"_id", "INPOCKET"}, "ID = " + idString, null, null, null, null);
         if (cursor.moveToNext()) {
             if (cursor.getInt(1) == 1) {
-                Log.d("tag", "value of cursor.getint = 1");
+                //Log.d("tag", "value of cursor.getint = 1");
                 cursor.close();
                 return true;
             }
         }
-        Log.d("tag ", "value of cursor.getint != 1");
+       // Log.d("tag ", "value of cursor.getint != 1");
         cursor.close();
         return false;
     }
 
-    /** This method gets all the movies in the Pocket in form of movie object with
+    /** This method gets all the movies where inPocket is 1 in the SQLite DB in form of movie object array list with
      * the selected elements:
      * Movie ID
      * Movie Boolean Value for INPOCKET
      * Movie TITLE
      * Movie POSTERPATH
+     *
+     *
+     *
      *
      * @return movie object array list
      */
@@ -133,7 +136,7 @@ public class PocketedMoviesManager {
     private PocketedMoviesManager() {
     }
 
-    /** Constructor for Movie that takes inPocket as an int and turns it into boolean isInPocket
+    /** Pseudo-Constructor for Movie that takes inPocket as an int and turns it into boolean isInPocket
      *
      * @param id
      * @param inPocket
@@ -152,17 +155,13 @@ public class PocketedMoviesManager {
         return movie;
     }
 
-    /** This class PockerDatabaseHelper creates and updates the Pocket Database
+    /** This class PocketDatabaseHelper creates and updates the Pocket Database
      *
      */
     private class PocketDatabaseHelper extends SQLiteOpenHelper {
         private static final String DB_NAME = "PocketedMoviesDataBase";
         private static final int DB_VERSION = 1;
 
-        /**XXX Helps with Database
-         *
-         * @param context
-         */
         PocketDatabaseHelper(Context context) {
             super(context, DB_NAME, null, DB_VERSION);
         }
@@ -225,11 +224,19 @@ public class PocketedMoviesManager {
             }
         }
 
-        /** This method upadates the movie as status of being in the Pocket database or not
+        /** This method deletes the movie from the Pocket database
+         *
+         * @param id
+         */
+        public void deleteMovie(int id) {
+            String idString = Integer.toString(id);
+            getWritableDatabase().delete("POCKET", "ID = ?", new String[]{idString});
+        }
+        /* This method updates the movie as status of being in the Pocket database or not
          *
          * @param id
          * @param inPocket
-         */
+
         public void updateMovie(int id, int inPocket) {
             ContentValues movieValues = new ContentValues();
             movieValues.put("ID", id);
@@ -240,17 +247,6 @@ public class PocketedMoviesManager {
             } catch (SQLException e) {
                 Log.d("tag", "Error updating db : " + e.getMessage());
             }
-        }
-
-        /** This method deletes the movie from the Pocket database
-         *
-         * @param id
-         */
-        public void deleteMovie(int id) {
-            String idString = Integer.toString(id);
-            getWritableDatabase().delete("POCKET", "ID = ?", new String[]{idString});
-        }
-
-
+        }*/
     }
 }

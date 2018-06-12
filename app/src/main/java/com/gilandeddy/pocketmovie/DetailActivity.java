@@ -31,8 +31,7 @@ import org.json.JSONObject;
  * @author Gilbert & Eddy
  * This class DetailActivity is an Activity class which handles the detailed view of a selected
  * movie from the recent popular movie fragment or the pocket movie fragment
- * The same activity can be used to view the details of a movie name search query
- * Base launcher for DetailActivity
+ *
  */
 public class DetailActivity extends AppCompatActivity {
     private ActionProvider shareActionProvider;
@@ -49,17 +48,18 @@ public class DetailActivity extends AppCompatActivity {
     private HttpReceiver httpReceiver = new HttpReceiver();
 
     /** OnCreate method creates the detail activity layout
-     *  This layout incluses:
+     *  This layout includes:
      * - Image View for Movie Details Image
      * - TextView for Movie Title
-     * - TextvView for Movie Summary
+     * - TextView for Movie Summary
      * - TextView for Movie Release Date
      * - TextView for Movie Genre
      * - Checkbox for Movie Pocket Status
      * The method also includes intent of selected movie needed for the selected movie to display
      *
      * The method also fills the imageviews and textviews and pocket checkbox status
-     * The method also calls the HttpRequestService for the Youtube trailer URL of the selected movie.
+     * The method also calls the HttpRequestService for the details of movies and for the Youtube
+     * trailer URL of the selected movie.
      * @param savedInstanceState
      */
     @Override
@@ -91,14 +91,17 @@ public class DetailActivity extends AppCompatActivity {
         HttpRequestService.startTrailerPathRequest(this, TMDBUrl.getVideoUrl(selectedMovie.getId()));
         Picasso.get().load(TMDBUrl.getImageUrlHead() + selectedMovie.getDetailImageUrl()).into(detailImageView);
 
-        Log.d("Tag", "Detail Activity Created");
+        //Log.d("Tag", "Detail Activity Created");
     }
 
-    /** This class HttpReciever which extends BreadcastReciever allows to register for system events
+    /** This class HttpReceiver which extends BroadcastReceiver allows to register for system events
      *
      */
     private class HttpReceiver extends BroadcastReceiver {
         /**
+         *This Override of onReceive sorts between the different httprequests that are launched onCreate
+         * and parses the response to fill the views.
+         *
          *
          * @param context
          * @param intent
@@ -108,8 +111,10 @@ public class DetailActivity extends AppCompatActivity {
             String intentAction = intent.getAction();
             String response = intent.getStringExtra("responseString");
             if (intentAction.equalsIgnoreCase("trailerRequestComplete")) {
+                //for Youtube ID requests : parse response
                 youtubeID = parseTrailerYoutubeID(response);
             } else if (intentAction.equalsIgnoreCase("detailRequestComplete")) {
+                //for detail requests : parse and fill views
                 parseMovieDetails(response);
                 isInPocket = PocketedMoviesManager.getInstance().isInPocketDatabase(selectedMovie.getId());
                 checkBox.setChecked(isInPocket);
@@ -118,14 +123,13 @@ public class DetailActivity extends AppCompatActivity {
                 ratingView.setText("Rating : " + selectedMovie.getRatingString());
                 releaseDateView.setText(selectedMovie.getReleaseDate());
                 genreView.setText(parseGenres(response));
-
                 Picasso.get().load(TMDBUrl.getImageUrlHead() + selectedMovie.getDetailImageUrl()).into(detailImageView);
             }
 
         }
     }
 
-    /** This method parses the jsonString of the Youtube tailer of the movie to a String value.
+    /** This method parses the jsonString of the Youtube trailer of the movie to a String value.
      *
      * @param jsonString
      * @return Youtube URL string
@@ -174,7 +178,8 @@ public class DetailActivity extends AppCompatActivity {
         return result;
     }
 
-    /** This method parses the jsonString summary of the movie to a String value
+    /** This method parses a jsonString of a movie and sets the attributes
+     *  of the selectedMovie Movie object
      *
      * @param jsonString
      */
@@ -191,8 +196,9 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-    /** This method handles the view of the pocket check box
-     * Checkbox with a tick implies the movie is in the Pocket movie database
+    /** This method handles clicks on the  pocket check box
+     * the checkbox changes appearance on each view and calls the add/delete method from the PocketedMovieManager
+     * depending on the case.
      *
      * @param view
      */
@@ -211,9 +217,9 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-    /** This method takes the user to the selected movie Youtube trailer.
-     * If the user has a Youtube application the methods results in the user having an option to
-     * either watch the trailer in the Youtube application or via a local browser.
+    /** This method handles clickes on the video button. it takes the user to the selected movie Youtube trailer.
+     * If the user has the Youtube app installed, it will be opened, if not, a browser will be directed to the
+     * correct page on the Youtube website.
      *
      * @param view
      */
@@ -265,7 +271,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    /** This method re-registers the http receiver whent the app is resumed
+    /** This method re-registers the http receiver when the app is resumed
      *
      */
     @Override

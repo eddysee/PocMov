@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 /**
  * @author Gilbert & Eddy
- * This class RecentMovies handles the recent movies which are then places in the Recent Fragment
+ * This Singleton class RecentMovies handles the recent movies which are then placed in the Recent Fragment
+ *
  */
 
 public class RecentMovies {

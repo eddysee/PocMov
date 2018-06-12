@@ -14,7 +14,7 @@ import okhttp3.Response;
 /**
  * @author Gilbert & Eddy
  * This class HttpRequestService handles the Http Requests that are made in different activities
- * in the app. It handels the Http Requests from 'The Movie Data Base' TMDB:
+ * in the app. It handles the Http Requests from 'The Movie Data Base' TMDB:
  * Http Requests for
  * - Popular Movies
  * - Details
@@ -34,7 +34,6 @@ public class HttpRequestService extends IntentService {
 
 
     /**
-     *
      * @param intent
      */
     @Override
@@ -46,7 +45,8 @@ public class HttpRequestService extends IntentService {
                 .url(url)
                 .build();
         /**
-         *
+         *This block of if statements reads the filter that was added to the incoming intent and
+         * broadcasts the response to the request with the appropriate action.
          */
         try {
             Response response = client.newCall(request).execute();
@@ -79,7 +79,8 @@ public class HttpRequestService extends IntentService {
 
     }
 
-    /** The method startActionRequestHttp returns the url parameter from a http.Request Context.
+    /** The method startActionRequestHttp takes a context and url as params and launches an
+     * http request for popular movies to the url.
      *
      * @param context
      * @param url
@@ -92,7 +93,8 @@ public class HttpRequestService extends IntentService {
 
     }
 
-    /**  The method startMovieDetailsRequest returns the url parameter from a http.Request Context.
+    /**  The method startMovieDetailsRequest takes a context and url as params and launches an
+     * http request for movie details to the url.
      *
      * @param context
      * @param url
@@ -106,7 +108,8 @@ public class HttpRequestService extends IntentService {
 
     }
 
-    /**  The method startMovieTrailerPathRequest returns the url parameter from a http.Request Context.
+    /**  The method startMovieTrailerPathRequest takes a context and url as params and launches an
+     * http request for movie videos to the url.
      *
      * @param context
      * @param url
@@ -120,7 +123,10 @@ public class HttpRequestService extends IntentService {
 
     }
 
-    /**  The method startSearchRequest returns the url parameter from a http.Request Context.
+    /**  The method startSearchRequest takes a context and url as params and launches an
+     * http request for movies to the url.
+     *
+     * Not in use as Search function is still unfinished.
      *
      * @param context
      * @param url

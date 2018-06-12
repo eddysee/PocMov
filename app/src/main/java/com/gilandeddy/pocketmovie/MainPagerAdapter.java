@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 /**
  * @author Gilbert & Eddy
  * This class MainPagerAdapter
+ *Manages the fragment tabs of the MainActivity
  *
  */
 

@@ -52,13 +52,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /** This method inflates a menu in the MainActitivity which includes an app widget which
+    /* This method inflates a menu in the MainActitivity which includes an app widget which
      *  launches the search activity when a query is entered.
+     *
+     * Not in use as the search functionality is still in progress
      *
      * @param menu
      * @return true for menu
-     */
-   /* @Override
+
+   @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);

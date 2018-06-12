@@ -1,9 +1,9 @@
 package com.gilandeddy.pocketmovie.model;
 
 /**
- * This class TMDBUrl hosts and gets the related URLs from 'The Movie Date Base'
+ * This class TMDBUrl hosts the URLs from 'The Movie Data Base'
  * TMDB - The Movie Data Base
- * It includes methods that generate String URLs
+ * It includes getter methods that generate String URLs
  */
 
 /** Initialising the String URLs
@@ -57,6 +57,7 @@ public class TMDBUrl {
     /** This method returns the search URl for query for a movie object arraylist
      * It requires String query and page number to construct the correct URL
      *
+     * Not currently in use as the search function is still in progress
      *
      * @param pageNumber
      * @param query
