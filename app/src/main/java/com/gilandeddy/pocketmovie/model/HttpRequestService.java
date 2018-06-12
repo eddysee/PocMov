@@ -15,7 +15,7 @@ import okhttp3.Response;
  * @author Gilbert & Eddy
  * This class HttpRequestService handles the Http Requests that are made in different activities
  * in the app. It handels the Http Requests from 'The Movie Data Base' TMDB:
- * Http Requests fort
+ * Http Requests for
  * - Popular Movies
  * - Details
  * - Trailer
@@ -25,7 +25,7 @@ import okhttp3.Response;
 public class HttpRequestService extends IntentService {
     static String EXTRA_URLSTRING = "com.gilandeddy.123456";
 
-    /**
+    /** This class HttpReciever which extends BreadcastReciever allows to register for system events
      *
      */
     public HttpRequestService() {
@@ -79,7 +79,7 @@ public class HttpRequestService extends IntentService {
 
     }
 
-    /**
+    /** The method startActionRequestHttp returns the url parameter from a http.Request Context.
      *
      * @param context
      * @param url
@@ -92,7 +92,7 @@ public class HttpRequestService extends IntentService {
 
     }
 
-    /**
+    /**  The method startMovieDetailsRequest returns the url parameter from a http.Request Context.
      *
      * @param context
      * @param url
@@ -106,7 +106,7 @@ public class HttpRequestService extends IntentService {
 
     }
 
-    /**
+    /**  The method startMovieTrailerPathRequest returns the url parameter from a http.Request Context.
      *
      * @param context
      * @param url
@@ -120,7 +120,7 @@ public class HttpRequestService extends IntentService {
 
     }
 
-    /**
+    /**  The method startSearchRequest returns the url parameter from a http.Request Context.
      *
      * @param context
      * @param url

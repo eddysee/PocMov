@@ -1,5 +1,7 @@
 package com.gilandeddy.pocketmovie;
 
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +26,8 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
     /**
      *
      */
+
+
     public static ArrayList<Movie> movies;
 
     final private ListItemClickListener listItemClickListener;
@@ -134,6 +138,8 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
     public interface ListItemClickListener {
         void onListItemClick(int clickedItemIndex);
     }
+
+
 
 
 }
