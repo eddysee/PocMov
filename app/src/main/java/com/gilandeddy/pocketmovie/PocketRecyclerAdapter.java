@@ -115,7 +115,7 @@ public class PocketRecyclerAdapter extends RecyclerView.Adapter<PocketRecyclerAd
         }
     }
 
-    /** This methos sets the movies to the movie object arraylist
+    /** This method sets the movies to the movie object arraylist
      *
      * @param movies
      */

@@ -12,14 +12,12 @@ import java.util.ArrayList;
 
 /**
  * @ Gilbert & Eddy
- * This class PockerMovieManager handles the SQL for the Pocket
- * It includes and SQLite Database creater and handler
+ * This class PocketMovieManager handles the SQL for the Pocket
+ * It includes and SQLite Database constructor and handler
  * Provides service for adding and deleting movies from Pocket
  */
 
-/**
- *
- */
+
 
 public class PocketedMoviesManager {
     /**
@@ -29,7 +27,7 @@ public class PocketedMoviesManager {
 
     /** This method gets the instance of the PocketMovieManager
      *
-     * @return indstance
+     * @return instance
      */
     public static PocketedMoviesManager getInstance() {
         return ourInstance;
@@ -40,7 +38,7 @@ public class PocketedMoviesManager {
      */
     private PocketDatabaseHelper pocketDatabaseHelper;
 
-    /**
+    /** An initialized instance of the appropriate subclass
      *
      * @param context
      */
@@ -50,7 +48,7 @@ public class PocketedMoviesManager {
         }
     }
 
-    /** The method adds movie to the Pocket with the following parameters
+    /** The method adds movie to the Pocket database with the following parameters
      *
      * @param id
      * @param inPocket
@@ -71,7 +69,7 @@ public class PocketedMoviesManager {
         pocketDatabaseHelper.updateMovie(id, inPocket);
     }
 
-    /** This method deletes the movies from the Pocket with movie id
+    /** This method deletes the movies from the Pocket database with movie id
      *
      * @param id
      */

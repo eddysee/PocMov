@@ -32,7 +32,7 @@ import java.util.ArrayList;
 /**
  * @author Gilbert & Eddy
  * This class RecentFragment extends Fragment and implements a recycler adapter
- * This class diplays the populat movies by inflating a recycler view and adding the movies
+ * This class diplays the popular movies by inflating a recycler view and adding the movies
  * A simple {@link Fragment} subclass.
  */
 public class RecentFragment extends Fragment implements RecentRecyclerAdapter.ListItemClickListener {
@@ -185,7 +185,7 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
         }
     }
 
-    /**
+    /** The method is launched on Stop to unregister the httpreceiver
      *
      */
     @Override

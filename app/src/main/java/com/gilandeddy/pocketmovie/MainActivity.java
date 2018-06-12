@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
      * @param menu
      * @return true for menu
      */
-    /*@Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this,SearchActivity.class)));
         searchView.setQueryHint("search");
         return true;
-    }
-    */
+    }*/
+
 }
 

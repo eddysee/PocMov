@@ -40,7 +40,9 @@ public class SearchActivity extends AppCompatActivity implements RecentRecyclerA
     private TextView searchErrorTextView;
 
     /** OnCreate the activity loads the search activity layout
-     * This layout incluses:
+     * This layout includes:
+     * - Recyclerview
+     * - Linearlayout
      *
      *
      * @param savedInstanceState
@@ -59,12 +61,12 @@ public class SearchActivity extends AppCompatActivity implements RecentRecyclerA
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         searchedRecyclerView.setLayoutManager(linearLayoutManager);
         searchRecyclerAdapter = new RecentRecyclerAdapter(this);
-        searchedRecyclerView.setAdapter(searchRecyclerAdapter);
-        searchRecyclerAdapter.setMovies(SearchedMovies.getInstance().getSearchedMovies());
+
+        
 
     }
 
-    /**
+    /** This method launches the detail activity for the selected movie details
      *
      * @param clickedItemIndex
      */
@@ -86,7 +88,7 @@ public class SearchActivity extends AppCompatActivity implements RecentRecyclerA
 
     }
 
-    /**
+    /** This class HttpReciever which extends BreadcastReciever allows to register for system events
      *
      */
     private class HttpReceiver extends BroadcastReceiver {
