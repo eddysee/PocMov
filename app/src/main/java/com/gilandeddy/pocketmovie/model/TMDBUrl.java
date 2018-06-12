@@ -3,7 +3,7 @@ package com.gilandeddy.pocketmovie.model;
 /**
  * This class TMDBUrl hosts and gets the related URLs from 'The Movie Date Base'
  * TMDB - The Movie Data Base
- * It includes methods that
+ * It includes methods that generate String URLs
  */
 
 /** Initialising the String URLs
@@ -26,7 +26,7 @@ public class TMDBUrl {
     /** This method returns the URL for the popular movies on TMDB
      *
      * @param pageNumber
-     * @return popular movie URl with page number
+     * @return popular movie URL with page number
      */
     public static String getPopularUrl(int pageNumber) {
         String createdURL = baseURL + "popular?api_key=" + apiKey + "&page=" + pageNumber;
