@@ -54,8 +54,7 @@ public class PocketRecyclerAdapter extends RecyclerView.Adapter<PocketRecyclerAd
         return new MovieViewHolder(movieView);
     }
 
-    /** This method internally calls onBindViewHolder(ViewHolder, int) to update the RecyclerView.
-     *  ViewHolder contents with the item at the given position and also sets up private fields to be used by RecyclerView.
+    /** This override of  onBindViewHolder(ViewHolder, int) loads the views of the item in the recycler
      *
      * @param holder
      * @param position
@@ -102,8 +101,8 @@ public class PocketRecyclerAdapter extends RecyclerView.Adapter<PocketRecyclerAd
             itemView.setOnClickListener(this);
         }
 
-        /** This methods shows the view when onClick
-         *  XXXX
+        /**
+         * Sends the position of the item clicked to ListItemClickListener
          *
          * @param view
          */
@@ -111,7 +110,7 @@ public class PocketRecyclerAdapter extends RecyclerView.Adapter<PocketRecyclerAd
         public void onClick(View view) {
             int clickedPosition = this.getAdapterPosition();
             PocketRecyclerAdapter.this.listItemClickListener.onListItemClick(clickedPosition);
-            Log.d("tag", "item clicked");
+           // Log.d("tag", "item clicked");
         }
     }
 
@@ -124,8 +123,8 @@ public class PocketRecyclerAdapter extends RecyclerView.Adapter<PocketRecyclerAd
         this.notifyDataSetChanged();
     }
 
-    /** XXXX
-     *
+    /**
+     *Calls onListItemClick on the correct item in the recycler
      */
     public interface ListItemClickListener {
         void onListItemClick(int clickedItemIndex);

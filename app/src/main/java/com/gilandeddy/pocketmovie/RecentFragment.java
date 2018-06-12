@@ -79,7 +79,7 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
 
     }
 
-    /** This class HttpReciever which extends BreadcastReciever allows to register for system events
+    /** This class HttpReceiver which extends BroadcastReceiver handles the responses from HttpRequests
      *
      */
     private class HttpReceiver extends BroadcastReceiver {
@@ -90,7 +90,7 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
          */
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d("tag", "OnReceive Called in RECENT fragment");
+            //Log.d("tag", "OnReceive Called in RECENT fragment");
             String response = intent.getStringExtra("responseString");
             if (intent.getAction().equalsIgnoreCase("httpRequestComplete")) {
                 progressBar.setVisibility(View.INVISIBLE);
@@ -100,10 +100,12 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
                 recentRecyclerAdapter.setMovies(RecentMovies.getInstance().getRecentMovies());
 
             } else if (intent.getAction().equalsIgnoreCase("failedHttpRequest")) {
+                //if the http request failed hide the progress bar and display the error message
                 progressBar.setVisibility(View.INVISIBLE);
                 errorTextView.setVisibility(View.VISIBLE);
                 errorTextView.setText(R.string.errorMessage);
             } else {
+                //if the request completes but with an unexpected action, an error message is displayed :
                 progressBar.setVisibility(View.INVISIBLE);
                 errorTextView.setVisibility(View.VISIBLE);
                 errorTextView.setText(R.string.unexpectedMessage);
@@ -112,7 +114,8 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
 
     }
 
-    /** This method parses the jsonString of the popular movie object arraylist to a String value.
+    /** This method parses the jsonString from http request to a  popular movie object arraylist
+     *
      *
      * @param jsonString
      * @return movie object arraylist
@@ -143,8 +146,8 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
         return movies;
     }
 
-    /** This method is launched when an item in the list of the recycler is clicked
-     * This method initiates the detail activity
+    /** This method handles clicks on items in the recycler and launches the detail activity while sending it
+     * the correct movie with the intent.
      *
      * @param clickedItemIndex
      */
@@ -166,6 +169,7 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
     }
 
     /** The method is launched on Start
+     * if movies is empty, an httprequest is launched.
      *
      */
     @Override
@@ -177,7 +181,7 @@ public class RecentFragment extends Fragment implements RecentRecyclerAdapter.Li
         getActivity().registerReceiver(httpReceiver, intentFilter);
         if (RecentMovies.getInstance().getRecentMovies().size() < 1) {
             HttpRequestService.startActionRequestHttp(getContext(), TMDBUrl.getPopularUrl(pageNumber));
-            Log.d("HTTP", "HttpRequest launched");
+            //Log.d("HTTP", "HttpRequest launched");
             progressBar.setVisibility(View.VISIBLE);
 
         } else {

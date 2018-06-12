@@ -19,6 +19,7 @@ import java.util.ArrayList;
 /**
  * @author Gilbert & Eddy
  * This class PockerRecyclerAdapter extends RecyclerViewAdapter
+ * This recycler fills the Recent Fragment in the Main Activity
  */
 
 public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAdapter.MovieViewHolder> {
@@ -54,8 +55,8 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
         return new MovieViewHolder(movieView);
     }
 
-    /** This method internally calls onBindViewHolder(ViewHolder, int) to update the RecyclerView.
-     *  ViewHolder contents with the item at the given position and also sets up private fields to be used by RecyclerView.
+    /** This override of  onBindViewHolder(ViewHolder, int) loads the views of the item in the recycler
+     * The last item of the Recycler is used as a button to load next page.
      *
      * @param holder
      * @param position
@@ -68,6 +69,7 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
         ImageView posterImageView = itemViewGroup.findViewById(R.id.posterImageView);
         TextView nextPageTextView = itemViewGroup.findViewById(R.id.nextPageTextView);
         if (position < movies.size()) {
+            // make 'next page' text invisible and display the movie item views
             Movie movie = movies.get(position);
             nextPageTextView.setVisibility(View.INVISIBLE);
             movieTitleView.setText(movie.getName());
@@ -77,6 +79,7 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
             ratingTitleView.setVisibility(View.VISIBLE);
             posterImageView.setVisibility(View.VISIBLE);
         } else if (position == movies.size()) {
+            //make the item views invisible on the last item and show "next page"
             nextPageTextView.setVisibility(View.VISIBLE);
             movieTitleView.setVisibility(View.INVISIBLE);
             ratingTitleView.setVisibility(View.INVISIBLE);
@@ -111,19 +114,19 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
         }
 
         /**
-         *
+         *Sends the position of the item clicked to ListItemClickListener
          * @param view
          */
         @Override
         public void onClick(View view) {
             int clickedPosition = this.getAdapterPosition();
             RecentRecyclerAdapter.this.listItemClickListener.onListItemClick(clickedPosition);
-            Log.d("tag", "item clicked");
+            //Log.d("tag", "item clicked");
         }
     }
 
-    /** This methods shows the view when onClick
-     *  XXXX
+    /** This method loads the data from the movie object array list
+     *
      *
      * @param movies
      */
@@ -132,7 +135,7 @@ public class RecentRecyclerAdapter extends RecyclerView.Adapter<RecentRecyclerAd
         this.notifyDataSetChanged();
     }
 
-    /** XXXX
+    /** Calls the onListItemClick on the correct item in the recycler.
      *
      */
     public interface ListItemClickListener {

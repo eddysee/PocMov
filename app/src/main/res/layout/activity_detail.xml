@@ -13,7 +13,7 @@
         android:id="@+id/detailImageView"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        android:background="@drawable/cinema"
+
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/detailTitleView"
         app:layout_constraintEnd_toEndOf="parent"

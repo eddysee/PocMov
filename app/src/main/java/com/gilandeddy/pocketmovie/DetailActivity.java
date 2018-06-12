@@ -124,6 +124,7 @@ public class DetailActivity extends AppCompatActivity {
                 releaseDateView.setText(selectedMovie.getReleaseDate());
                 genreView.setText(parseGenres(response));
                 Picasso.get().load(TMDBUrl.getImageUrlHead() + selectedMovie.getDetailImageUrl()).into(detailImageView);
+
             }
 
         }

@@ -30,6 +30,12 @@ import java.util.ArrayList;
  * @author Gilbert & Eddy
  * This class SearchActivity extends AppCompatActivity implements a RecyclerAdapter
  *
+ *
+ * NOT IN USE as this function is still in progress
+ * not thoroughly commented below.
+ *
+ *
+ *
  */
 
 public class SearchActivity extends AppCompatActivity implements RecentRecyclerAdapter.ListItemClickListener {
