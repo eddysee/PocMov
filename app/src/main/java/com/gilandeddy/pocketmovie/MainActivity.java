@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** The MainActivity class of the application includes two sliding tabs
      *  An adapter for the fragment manager.
+     *  Tablayout set as adapter
      *  Base launcher for  MainActivity
      *
      * @param savedInstanceState
